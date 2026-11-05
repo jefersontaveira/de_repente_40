@@ -17,7 +17,9 @@ class SiteAnimations {
 
     this.initSmoothNavigation();
     this.initPetalsCanvas();
-    this.initScrollStorytelling();
+    this.initHeroRevolve3DStage();
+    this.initPartySectionAnimations();
+    this.initEventDetailsAnimations();
     this.initCountdownTimer();
     this.initTiltCards();
     this.initAudioAmbience();
@@ -181,28 +183,253 @@ class SiteAnimations {
   }
 
   /* ------------------------------------------------------------------
-   * 3. ANIMAÇÕES SEGURAS (SEM OCULTAR NENHUM CONTEÚDO)
+   * 3. PALCO 3D GIRATÓRIO (EFEITO "DAR A VOLTA")
+   * O anexo 1 (Hero) gira para a esquerda enquanto a seção 2 (Carta)
+   * simultaneamente gira da direita para o centro, como uma só cena 3D!
    * ------------------------------------------------------------------ */
-  initScrollStorytelling() {
-    if (typeof gsap === "undefined") return;
+  initHeroRevolve3DStage() {
+    const stage = document.querySelector(".hero-revolve-stage");
+    const rotator = document.querySelector(".stage-rotator-3d");
+    const faceHero = document.querySelector(".stage-face-hero");
+    const faceLetter = document.querySelector(".stage-face-letter");
 
-    // Animação de entrada suave apenas no Hero inicial
-    // NENHUMA seção do site fica com opacity: 0 ou é ocultada por ScrollTrigger!
-    try {
-      const heroTl = gsap.timeline({ defaults: { ease: "power2.out" } });
-      heroTl
-        .from(".hero-invite-tag", { y: -15, duration: 0.6, delay: 0.1 })
-        .from(".hero-heart-svg", { scale: 0.8, duration: 0.4 }, "-=0.2")
-        .from(".hero-cursive-title", { y: 15, duration: 0.6 }, "-=0.2")
-        .from(".hero-big-number", { scale: 0.85, duration: 0.7, ease: "back.out(1.4)" }, "-=0.3")
-        .from(".hero-subtitle", { y: 15, duration: 0.5 }, "-=0.2");
-    } catch (e) {
-      console.warn("Animação Hero ignorada:", e);
+    if (!stage || !rotator || !faceHero || !faceLetter) return;
+
+    if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Posição inicial: Rotator em 0deg, Hero em frente, Carta oculta à direita (+90deg)
+      gsap.set(rotator, { rotateY: 0 });
+      gsap.set(faceHero, { opacity: 1, pointerEvents: "auto" });
+      gsap.set(faceLetter, { opacity: 0, pointerEvents: "none" });
+
+      // Cria a timeline sincronizada com o scroll que executa a volta fluida como uma só seção
+      const revolveTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: stage,
+          start: "top top",
+          end: "+=1200", // Distância confortável: Hero -> Giro 3D -> Leitura da Carta
+          pin: true,
+          scrub: 0.6, // Inércia ultra-suave e reativa
+          anticipatePin: 1,
+          onUpdate: (self) => {
+            // Habilita interatividade quando a carta estiver na frente
+            if (self.progress > 0.45) {
+              faceLetter.style.pointerEvents = "auto";
+              faceHero.style.pointerEvents = "none";
+            } else {
+              faceLetter.style.pointerEvents = "none";
+              faceHero.style.pointerEvents = "auto";
+            }
+          }
+        }
+      });
+
+      // 1. Buffer inicial: o Hero repousa estático até o scroll intencional começar (0.0 a 0.12)
+      // 2. Giro 3D simultâneo do palco (0.12 a 0.68):
+      //    O palco gira -90deg em bloco unificado.
+      //    Hero (0deg -> -90deg) gira para a esquerda saindo.
+      //    Carta (+90deg -> 0deg) simultaneamente gira da direita entrando de frente!
+      revolveTl.to(rotator, {
+        rotateY: -90,
+        ease: "power1.inOut",
+        duration: 0.56
+      }, 0.12);
+
+      // Transição sutil de opacidade para refinamento nas bordas do giro 3D:
+      revolveTl.to(faceHero, {
+        opacity: 0,
+        ease: "power1.in",
+        duration: 0.35
+      }, 0.22);
+
+      revolveTl.to(faceLetter, {
+        opacity: 1,
+        ease: "power1.out",
+        duration: 0.35
+      }, 0.32);
+
+      // 3. Buffer de leitura (0.68 a 1.0):
+      //    A carta permanece estática e centralizada para leitura antes de continuar o scroll do site.
     }
   }
 
   /* ------------------------------------------------------------------
-   * 4. EFEITO 3D TILT NOS CARDS DE PRESENTES
+   * 4. ANIMAÇÕES DA FEIJOADA & GIRO ESFÉRICO 3D ("COMO SE FOSSE UMA BOLA")
+   * ------------------------------------------------------------------ */
+  initPartySectionAnimations() {
+    if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") return;
+
+    // 1. "Teremos uma deliciosa" aparece suavemente com o scroll
+    gsap.fromTo(".party-pre-title",
+      { opacity: 0, y: 24 },
+      {
+        opacity: 1,
+        y: 0,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".party-intro-wrap",
+          start: "top 82%",
+          end: "top 58%",
+          scrub: 0.5
+        }
+      }
+    );
+
+    // 2. "Feijoada e muito Pagode!" cresce de zoom zero (scale: 0) até o tamanho atual com o scroll
+    gsap.fromTo(".party-banner-container",
+      { scale: 0, opacity: 0, transformOrigin: "center center" },
+      {
+        scale: 1,
+        opacity: 1,
+        ease: "power1.out",
+        scrollTrigger: {
+          trigger: ".party-intro-wrap",
+          start: "top 78%",
+          end: "top 44%",
+          scrub: 0.6
+        }
+      }
+    );
+
+    // 3. Palco Esférico 3D dos 4 Cards ("Giro circular como se fosse uma bola")
+    const ballStage = document.querySelector(".party-ball-stage");
+    const ballRotator = document.querySelector(".ball-rotator-3d");
+    const ballFaces = document.querySelectorAll(".ball-face");
+    const ballDots = document.querySelectorAll(".ball-dot");
+
+    if (!ballStage || !ballRotator || !ballFaces.length) return;
+
+    if (typeof ScrollToPlugin !== "undefined") {
+      gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+    } else {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+
+    const ballTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ballStage,
+        start: "center center",
+        end: "+=750",
+        pin: true,
+        scrub: 0.6,
+        anticipatePin: 1,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          // Identifica qual card está em foco com precisão nos 4 pontos de parada
+          const activeIndex = Math.min(3, Math.round(progress * 3));
+
+          ballDots.forEach((dot, idx) => {
+            dot.classList.toggle("active", idx === activeIndex);
+          });
+
+          ballFaces.forEach((face, idx) => {
+            face.classList.toggle("active-face", idx === activeIndex);
+          });
+        }
+      }
+    });
+
+    // Rotação orbital linear: cada 1/3 de progresso gira rigorosamente 90 graus
+    // Progresso 0/3 (0.00) = 0deg   -> Card 0 (Feijoada) 100% rente à tela no centro
+    // Progresso 1/3 (0.33) = -90deg  -> Card 1 (Pagode) 100% rente à tela no centro
+    // Progresso 2/3 (0.66) = -180deg -> Card 2 (Open Bar) 100% rente à tela no centro
+    // Progresso 3/3 (1.00) = -270deg -> Card 3 (Doces) 100% rente à tela no centro
+    ballTl.to(ballRotator, {
+      rotateY: -270,
+      ease: "none",
+      duration: 1
+    });
+
+    // Navegação interativa por clique nas pílulas inferiores: exatamente 1 card por clique
+    ballDots.forEach((dot, idx) => {
+      dot.addEventListener("click", (e) => {
+        e.preventDefault();
+        const st = ballTl.scrollTrigger;
+        if (!st) return;
+
+        // Cada card corresponde rigorosamente a 1/3 do percurso (0, 1/3, 2/3, 1)
+        const targetProgress = idx / 3;
+        const targetScroll = Math.round(st.start + targetProgress * (st.end - st.start));
+
+        // Atualiza imediatamente o destaque da pílula e da face ativa
+        ballDots.forEach((d, i) => d.classList.toggle("active", i === idx));
+        ballFaces.forEach((f, i) => f.classList.toggle("active-face", i === idx));
+
+        // Transição suave com GSAP ScrollToPlugin: sem salto duplo, parando no centro exato
+        if (typeof gsap.plugins !== "undefined" && gsap.plugins.scrollTo) {
+          gsap.to(window, {
+            scrollTo: { y: targetScroll, autoKill: false },
+            duration: 0.65,
+            ease: "power2.inOut"
+          });
+        } else {
+          window.scrollTo({
+            top: targetScroll,
+            behavior: "smooth"
+          });
+        }
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------------
+   * 5. COREOGRAFIA SEQUENCIAL DOS CARDS DE INFORMAÇÕES & CONTADOR (ATO 3)
+   * Montagem progressiva acoplada ao scroll com preview contínuo (sem telas em branco)
+   * ------------------------------------------------------------------ */
+  initEventDetailsAnimations() {
+    if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") return;
+
+    const assemblyStage = document.querySelector(".info-assembly-stage");
+    const cardDia = document.querySelector(".card-info-dia");
+    const cardHorario = document.querySelector(".card-info-horario");
+    const cardLocal = document.querySelector(".card-info-local");
+    const cardContador = document.querySelector(".card-info-contador");
+
+    if (!assemblyStage || !cardDia || !cardHorario || !cardLocal || !cardContador) return;
+
+    // A montagem é acoplada de forma fluida ao scroll, sem criar buracos em branco!
+    // Os cards já começam visíveis em preview elegante (opacity: 0.65) e se encaixam sob o controle do scroll.
+    const detailsTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: assemblyStage,
+        start: "top 90%",
+        end: "center 55%",
+        scrub: 0.5
+      }
+    });
+
+    // 1. Dia 03/04: surge primeiro da esquerda (já visível a 65%, desliza suavemente até 0)
+    detailsTl.fromTo(cardDia,
+      { x: -50, opacity: 0.65 },
+      { x: 0, opacity: 1, duration: 0.5, ease: "power1.out" },
+      0.00
+    );
+
+    // 2. Horário 13h: quando Dia está na metade do caminho (0.25), surge de baixo
+    detailsTl.fromTo(cardHorario,
+      { y: 40, opacity: 0.65 },
+      { y: 0, opacity: 1, duration: 0.5, ease: "power1.out" },
+      0.25
+    );
+
+    // 3. Local Espaço WM prime: quando Horário está na metade do caminho (0.50), surge da direita
+    detailsTl.fromTo(cardLocal,
+      { x: 50, opacity: 0.65 },
+      { x: 0, opacity: 1, duration: 0.5, ease: "power1.out" },
+      0.50
+    );
+
+    // 4. Faltam apenas... (Contador): aparece por último montando o encaixe perfeito dos quatro
+    detailsTl.fromTo(cardContador,
+      { y: 35, scale: 0.96, opacity: 0.65 },
+      { y: 0, scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.2)" },
+      0.70
+    );
+  }
+
+  /* ------------------------------------------------------------------
+   * 6. EFEITO 3D TILT NOS CARDS DE PRESENTES
    * ------------------------------------------------------------------ */
   initTiltCards() {
     const cards = document.querySelectorAll(".gift-card");
@@ -245,7 +472,7 @@ class SiteAnimations {
   }
 
   /* ------------------------------------------------------------------
-   * 5. CONTADOR REGRESSIVO EM TEMPO REAL
+   * 7. CONTADOR REGRESSIVO EM TEMPO REAL
    * ------------------------------------------------------------------ */
   initCountdownTimer() {
     const daysEl = document.getElementById("cdDays");
@@ -285,7 +512,7 @@ class SiteAnimations {
   }
 
   /* ------------------------------------------------------------------
-   * 6. MURAL INTERATIVO DE RECADOS & FELICITAÇÕES
+   * 8. MURAL INTERATIVO DE RECADOS & FELICITAÇÕES
    * ------------------------------------------------------------------ */
   initGuestBook() {
     const form = document.getElementById("guestBookForm");
@@ -377,7 +604,7 @@ class SiteAnimations {
   }
 
   /* ------------------------------------------------------------------
-   * 7. FAQ EXPANSÍVEL (PERGUNTAS FREQUENTES)
+   * 9. FAQ EXPANSÍVEL (PERGUNTAS FREQUENTES)
    * ------------------------------------------------------------------ */
   initFaqAccordion() {
     const items = document.querySelectorAll(".faq-item");
@@ -393,7 +620,7 @@ class SiteAnimations {
   }
 
   /* ------------------------------------------------------------------
-   * 8. SOM DE AMBIENTE OPCIONAL (WEB AUDIO API - LEVE E PROCEDURAL)
+   * 10. SOM DE AMBIENTE OPCIONAL (WEB AUDIO API - LEVE E PROCEDURAL)
    * ------------------------------------------------------------------ */
   initAudioAmbience() {
     const audioBtn = document.getElementById("audioToggleBtn");

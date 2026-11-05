@@ -78,14 +78,14 @@ body.modal-open {
   overflow: hidden;
 }
 
-/* Wrapper que impede overflow horizontal sem travar o scroll da janela */
+/* Wrapper que organiza as seções com limite global de 1400px sem quebrar o contexto de pinning */
 .site-wrapper {
   position: relative;
-  max-width: 1180px;
+  width: 100%;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 1.5rem 5rem;
   z-index: 10;
-  overflow-x: clip;
+  overflow: visible;
 }
 
 /* Canvas de Pétalas 3D Leve */
@@ -124,11 +124,11 @@ body.modal-open {
  * BARRA DE NAVEGAÇÃO SUPERIOR (HEADER FIXO GLASSMORPHISM)
  * ==================================================================== */
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 60;
+  z-index: 100;
   background: rgba(253, 243, 231, 0.88);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -142,7 +142,7 @@ body.modal-open {
 }
 
 .header-container {
-  max-width: 1180px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0.85rem 1.5rem;
   display: flex;
@@ -211,24 +211,81 @@ body.modal-open {
 }
 
 /* ====================================================================
- * ATO 1: HERO SECTION
+ * ATO 1: PALCO 3D GIRATÓRIO (EFEITO "DAR A VOLTA")
+ * O Hero e a Carta pertencem ao mesmo palco 3D: o Hero gira para a esquerda
+ * enquanto a Carta simultaneamente gira da direita, como uma só seção contínua!
  * ==================================================================== */
-.hero-section {
-  min-height: 85vh;
+.hero-revolve-stage {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 720px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  background-color: var(--bg-main);
+  overflow: visible; /* Essencial para permitir a profundidade 3D sem cortes */
+  padding: 4.5rem 1rem 2rem;
+}
+
+.stage-perspective-viewport {
   position: relative;
-  padding: 3rem 1rem 2rem;
+  width: 100%;
+  max-width: 860px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1600px;
+  perspective-origin: 50% 50%;
+  transform-style: preserve-3d;
+}
+
+.stage-rotator-3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+:root {
+  --revolve-radius: clamp(160px, 32vw, 300px);
+}
+
+.stage-face {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  transition: none;
+}
+
+.stage-face-hero {
+  z-index: 2;
+  transform: rotateY(0deg) translateZ(var(--revolve-radius));
+}
+
+.stage-face-letter {
+  z-index: 1;
+  transform: rotateY(90deg) translateZ(var(--revolve-radius));
+  opacity: 0;
+  pointer-events: none;
 }
 
 .hero-content {
   position: relative;
-  z-index: 6;
   max-width: 800px;
   margin: 0 auto;
+  text-align: center;
 }
 
 .hero-invite-tag {
@@ -357,36 +414,33 @@ body.modal-open {
 }
 
 /* ====================================================================
- * SEÇÃO: CARTA DA ANIVERSARIANTE (SOBRE A NOVA FASE)
+ * CARD DA CARTA DA ANIVERSARIANTE (FACE 2)
  * ==================================================================== */
-.welcome-letter-section {
-  padding: 3.5rem 1rem 4rem;
-}
-
 .letter-card {
-  background: var(--bg-card);
-  border: 1.5px solid rgba(200, 75, 28, 0.2);
-  border-radius: var(--radius-lg);
-  padding: 3rem 2.5rem;
-  max-width: 820px;
+  background: #FFFFFF;
+  border: 1px solid rgba(200, 75, 28, 0.15);
+  border-radius: 28px;
+  padding: 3.5rem 2.8rem 2.5rem;
+  max-width: 780px;
+  width: 100%;
   margin: 0 auto;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 12px 35px rgba(92, 34, 14, 0.08);
   position: relative;
   text-align: center;
 }
 
 .letter-avatar-wrap {
-  width: 90px;
-  height: 90px;
-  margin: -4.5rem auto 1.5rem;
-  background: var(--cream);
-  border: 3px solid var(--terracotta);
+  width: 76px;
+  height: 76px;
+  margin: -5.2rem auto 1.2rem;
+  background: #FFF0F2;
+  border: 3px solid #E88390;
   border-radius: var(--radius-full);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.8rem;
-  box-shadow: var(--shadow-md);
+  font-size: 2.2rem;
+  box-shadow: 0 6px 18px rgba(232, 131, 144, 0.25);
 }
 
 .letter-title {
@@ -394,19 +448,20 @@ body.modal-open {
   font-size: clamp(1.8rem, 4vw, 2.4rem);
   font-weight: 800;
   color: var(--coffee-dark);
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
+  line-height: 1.25;
 }
 
 .letter-body {
   font-size: 1.05rem;
-  line-height: 1.7;
+  line-height: 1.75;
   color: var(--coffee);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.8rem;
 }
 
 .letter-signature {
   font-family: var(--font-cursive);
-  font-size: 2.2rem;
+  font-size: 2.4rem;
   color: var(--terracotta);
   display: block;
 }
@@ -415,22 +470,32 @@ body.modal-open {
  * ATO 2: FEIJOADA E MUITO PAGODE!
  * ==================================================================== */
 .party-section {
-  padding: 4rem 1rem 4.5rem;
+  padding: 2.5rem 1rem 0.5rem;
   text-align: center;
+  position: relative;
+  overflow: visible;
+}
+
+.party-intro-wrap {
+  margin-bottom: 1.5rem;
+  will-change: transform, opacity;
 }
 
 .party-pre-title {
   font-family: var(--font-cursive);
-  font-size: clamp(1.6rem, 4vw, 2.3rem);
+  font-size: clamp(1.8rem, 4.5vw, 2.6rem);
   color: var(--coffee);
   margin-bottom: 0.6rem;
+  will-change: transform, opacity;
 }
 
 .party-banner-container {
   position: relative;
   display: inline-block;
-  margin: 0.5rem auto 3rem;
+  margin: 0.5rem auto 1.5rem;
   max-width: 92vw;
+  transform-origin: center center;
+  will-change: transform, opacity;
 }
 
 .brush-stroke-svg {
@@ -475,12 +540,189 @@ body.modal-open {
   transform: rotate(20deg);
 }
 
-/* Grade de Experiências Gastronômicas & Musicais (Enriquecendo a página) */
-.menu-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1rem;
+/* ====================================================================
+ * PALCO ESFÉRICO 3D DOS 4 CARDS ("GIRO COMO SE FOSSE UMA BOLA")
+ * ==================================================================== */
+:root {
+  /* Raio encurtado para aproximar os cards uns dos outros */
+  --ball-radius: clamp(140px, 21vw, 220px);
+}
+
+.party-ball-stage {
+  position: relative;
+  width: 100%;
+  min-height: 440px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  padding: 0 0 0.5rem;
+}
+
+.ball-perspective-viewport {
+  position: relative;
+  width: 100%;
+  max-width: 860px;
+  height: 440px;
+  min-height: 440px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1400px;
+  perspective-origin: 50% 50%;
+  transform-style: preserve-3d;
+}
+
+.ball-rotator-3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.ball-face {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 320px;
+  height: 380px;
+  margin-top: -190px;
+  margin-left: -160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  transform-origin: 50% 50% 0;
+  will-change: transform, opacity;
+  transition: opacity 0.35s ease, filter 0.35s ease;
+}
+
+.ball-face-0 {
+  transform: rotateY(0deg) translateZ(var(--ball-radius));
+}
+
+.ball-face-1 {
+  transform: rotateY(90deg) translateZ(var(--ball-radius));
+}
+
+.ball-face-2 {
+  transform: rotateY(180deg) translateZ(var(--ball-radius));
+}
+
+.ball-face-3 {
+  transform: rotateY(270deg) translateZ(var(--ball-radius));
+}
+
+/* O card gira torto/inclinado de forma charmosa... */
+.card-tilt-left {
+  transform: rotate(-3deg);
+}
+
+.card-tilt-right {
+  transform: rotate(3deg);
+}
+
+/* ...mas o conteúdo e os textos permanecem 100% nivelados e alinhados na horizontal! */
+.card-content-aligned {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center center;
+}
+
+.card-tilt-left .card-content-aligned {
+  transform: rotate(3deg);
+}
+
+.card-tilt-right .card-content-aligned {
+  transform: rotate(-3deg);
+}
+
+/* Card mais arredondado (border-radius: 40px) e com borda mais sutil e clara */
+.ball-face .menu-feature-card {
+  width: 100%;
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border: 1.5px solid rgba(200, 75, 28, 0.10);
+  border-radius: 40px;
+  padding: 2.2rem 1.6rem;
+  box-shadow: 0 14px 34px rgba(92, 34, 14, 0.05);
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.ball-face.active-face .menu-feature-card {
+  transform: rotate(0deg) scale(1.02);
+  border-color: rgba(200, 75, 28, 0.28);
+  box-shadow: 0 18px 42px rgba(200, 75, 28, 0.14);
+}
+
+.ball-face.active-face .card-content-aligned {
+  transform: rotate(0deg);
+}
+
+.card-step-badge {
+  margin-top: 1.2rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--terracotta);
+  background: rgba(200, 75, 28, 0.08);
+  padding: 0.35rem 0.9rem;
+  border-radius: var(--radius-full);
+}
+
+/* Indicador dos 4 Cards afastado com proporção elegante sem gerar espaço vazio */
+.ball-nav-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.2rem;
+  position: relative;
+  z-index: 30;
+  flex-wrap: wrap;
+}
+
+.ball-dot {
+  background: rgba(253, 243, 231, 0.95);
+  border: 1.5px solid rgba(200, 75, 28, 0.25);
+  color: var(--coffee-dark);
+  font-family: var(--font-main);
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-smooth);
+}
+
+.ball-dot:hover {
+  border-color: var(--terracotta);
+  color: var(--terracotta);
+  transform: translateY(-2px);
+}
+
+.ball-dot.active {
+  background: var(--terracotta);
+  color: var(--white);
+  border-color: var(--terracotta);
+  box-shadow: 0 4px 14px var(--terracotta-glow);
+  transform: scale(1.05);
 }
 
 .menu-feature-card {
@@ -532,15 +774,40 @@ body.modal-open {
  * ATO 3: DATA, HORÁRIO, LOCAL & CRONOGRAMA
  * ==================================================================== */
 .event-details-section {
-  padding: 4rem 1rem 5rem;
+  padding: 0.5rem 1rem 3.5rem;
   text-align: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.info-assembly-stage {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  padding: 0.25rem 0;
 }
 
 .details-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
-  margin-bottom: 2.5rem;
+  width: 100%;
+  margin-bottom: 2rem;
+  overflow: visible;
+}
+
+.card-info-dia,
+.card-info-horario,
+.card-info-local,
+.card-info-contador {
+  will-change: transform, opacity;
 }
 
 .info-glass-card {
@@ -552,11 +819,10 @@ body.modal-open {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: var(--transition-smooth);
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .info-glass-card:hover {
-  transform: translateY(-5px);
   border-color: var(--terracotta);
   box-shadow: var(--shadow-md);
 }
