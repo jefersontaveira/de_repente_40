@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgDinner" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDF3E7"/>
+      <stop offset="100%" stop-color="#F5DEBE"/>
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="90" fill="url(#bgDinner)" stroke="#D35424" stroke-width="1.5"/>
+  <!-- Cloche / Prato de Jantar Gourmet -->
+  <ellipse cx="100" cy="140" rx="60" ry="12" fill="#5C220E"/>
+  <ellipse cx="100" cy="138" rx="54" ry="9" fill="#FFF"/>
+  <!-- Cúpula / Cloche -->
+  <path d="M55 130 C55 85 145 85 145 130 Z" fill="#D35424"/>
+  <circle cx="100" cy="80" r="8" fill="#E5A93C"/>
+  <!-- Taça de Vinho Elegante -->
+  <path d="M128 55 Q128 72 138 72 Q148 72 148 55 Z" fill="#BA3D11" stroke="#5C220E" stroke-width="1.5"/>
+  <line x1="138" y1="72" x2="138" y2="88" stroke="#5C220E" stroke-width="2"/>
+  <ellipse cx="138" cy="88" rx="7" ry="2" fill="#5C220E"/>
+  <!-- Coraçãozinho no vapor -->
+  <path d="M100 62 C96 55 88 56 88 62 C88 68 100 75 100 75 C100 75 112 68 112 62 C112 56 104 55 100 62 Z" fill="#E5A93C"/>
+</svg>

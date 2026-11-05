@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 350" width="100%" height="100%">
+  <defs>
+    <filter id="flowerShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="3" dy="6" stdDeviation="6" flood-color="#5C220E" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <g filter="url(#flowerShadow)">
+    <!-- Ramos de Folhas Verde Oliva -->
+    <path d="M40 320 Q120 220 180 120" stroke="#6E7346" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <ellipse cx="110" cy="240" rx="20" ry="10" fill="#6E7346" transform="rotate(-30 110 240)"/>
+    <ellipse cx="145" cy="180" rx="24" ry="11" fill="#8F9462" transform="rotate(-40 145 180)"/>
+    <ellipse cx="160" cy="130" rx="18" ry="8" fill="#6E7346" transform="rotate(-20 160 130)"/>
+    <ellipse cx="85" cy="275" rx="18" ry="9" fill="#8F9462" transform="rotate(-50 85 275)"/>
+
+    <!-- Ramos com frutinhas / sementes creme e terracota -->
+    <path d="M70 290 Q40 180 80 120" stroke="#5C220E" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <circle cx="80" cy="120" r="6" fill="#E5A93C"/>
+    <circle cx="65" cy="140" r="5" fill="#C84B1C"/>
+    <circle cx="50" cy="170" r="6" fill="#E5A93C"/>
+    <circle cx="58" cy="205" r="5" fill="#C84B1C"/>
+
+    <!-- Flor Grande Terracota Vibrante -->
+    <g transform="translate(100, 100)">
+      <!-- Pétalas exteriores -->
+      <ellipse cx="0" cy="-45" rx="18" ry="32" fill="#BA3D11"/>
+      <ellipse cx="32" cy="-32" rx="18" ry="32" fill="#C84B1C" transform="rotate(45 32 -32)"/>
+      <ellipse cx="45" cy="0" rx="18" ry="32" fill="#BA3D11" transform="rotate(90 45 0)"/>
+      <ellipse cx="32" cy="32" rx="18" ry="32" fill="#D35424" transform="rotate(135 32 32)"/>
+      <ellipse cx="0" cy="45" rx="18" ry="32" fill="#BA3D11" transform="rotate(180 0 45)"/>
+      <ellipse cx="-32" cy="32" rx="18" ry="32" fill="#C84B1C" transform="rotate(225 -32 32)"/>
+      <ellipse cx="-45" cy="0" rx="18" ry="32" fill="#BA3D11" transform="rotate(270 -45 0)"/>
+      <ellipse cx="-32" cy="-32" rx="18" ry="32" fill="#D35424" transform="rotate(315 -32 -32)"/>
+      <!-- Miolo da Flor com detalhes dourados e café -->
+      <circle cx="0" cy="0" r="22" fill="#4A1A0A"/>
+      <circle cx="0" cy="0" r="16" fill="#E5A93C" stroke="#4A1A0A" stroke-width="2" stroke-dasharray="2,3"/>
+      <circle cx="0" cy="0" r="9" fill="#331005"/>
+    </g>
+
+    <!-- Flor Creme / Off-white Elegante ao lado -->
+    <g transform="translate(195, 175) scale(0.75)">
+      <ellipse cx="0" cy="-40" rx="16" ry="28" fill="#FDF3E7"/>
+      <ellipse cx="28" cy="-28" rx="16" ry="28" fill="#F7E6D2" transform="rotate(45 28 -28)"/>
+      <ellipse cx="40" cy="0" rx="16" ry="28" fill="#FDF3E7" transform="rotate(90 40 0)"/>
+      <ellipse cx="28" cy="28" rx="16" ry="28" fill="#F7E6D2" transform="rotate(135 28 28)"/>
+      <ellipse cx="0" cy="40" rx="16" ry="28" fill="#FDF3E7" transform="rotate(180 0 40)"/>
+      <ellipse cx="-28" cy="28" rx="16" ry="28" fill="#F7E6D2" transform="rotate(225 -28 28)"/>
+      <ellipse cx="-40" cy="0" rx="16" ry="28" fill="#FDF3E7" transform="rotate(270 -40 0)"/>
+      <ellipse cx="-28" cy="-28" rx="16" ry="28" fill="#F7E6D2" transform="rotate(315 -28 -28)"/>
+      <!-- Miolo da Flor Creme -->
+      <circle cx="0" cy="0" r="18" fill="#5C220E"/>
+      <circle cx="0" cy="0" r="12" fill="#E5A93C"/>
+      <circle cx="0" cy="0" r="6" fill="#3D1408"/>
+    </g>
+  </g>
+</svg>

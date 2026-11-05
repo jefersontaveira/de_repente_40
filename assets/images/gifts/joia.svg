@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgJewel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDF3E7"/>
+      <stop offset="100%" stop-color="#F5DEBE"/>
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="90" fill="url(#bgJewel)" stroke="#E5A93C" stroke-width="1.5"/>
+  <!-- Caixa de Joias de Veludo Terracota -->
+  <rect x="60" y="95" width="80" height="55" rx="5" fill="#BA3D11"/>
+  <rect x="56" y="85" width="88" height="15" rx="4" fill="#D35424"/>
+  <!-- Colar Dourado Brilhante -->
+  <path d="M78 85 Q100 120 122 85" fill="none" stroke="#E5A93C" stroke-width="3" stroke-linecap="round"/>
+  <!-- Pingente de Coração / Brilhante -->
+  <path d="M100 115 C96 110 88 111 88 116 C88 121 100 127 100 127 C100 127 112 121 112 116 C112 111 104 110 100 115 Z" fill="#E5A93C"/>
+  <!-- Brilhos cintilantes -->
+  <path d="M135 60 L140 65 L135 70 L130 65 Z" fill="#E5A93C"/>
+  <path d="M65 65 L70 70 L65 75 L60 70 Z" fill="#E5A93C"/>
+  <circle cx="100" cy="50" r="2.5" fill="#E5A93C"/>
+</svg>

@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>De Repente 40! — Millena | Feijoada, Pagode & Lista de Presentes</title>
+  
+  <!-- Meta Tags SEO & Compartilhamento (WhatsApp / Redes Sociais) -->
+  <meta name="description" content="Você está convidado(a) para comemorar os 40 anos da Millena com uma deliciosa Feijoada e muito Pagode no Espaço WM Prime! Dia 03/04 às 13h.">
+  <meta property="og:title" content="De Repente 40! — Aniversário da Millena 🎉">
+  <meta property="og:description" content="Feijoada, Pagode e muita comemoração! Confira os detalhes da festa e a lista de presentes.">
+  <meta property="og:image" content="./tema_e_layout.jpeg">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#FDF3E7">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💖</text></svg>">
+
+  <!-- Google Fonts: Caligráfica, Editorial e Moderna -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@700&family=Outfit:wght@600;700;800;900&family=Playfair+Display:ital,wght@1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Estilos Principais -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Canvas Fixo de Pétalas e Partículas 3D -->
+  <canvas id="petalsCanvas"></canvas>
+
+  <!-- Molduras Botânicas Decorativas -->
+  <img src="assets/images/botanical_corner.svg" alt="" class="botanical-frame botanical-top-left" aria-hidden="true">
+  <img src="assets/images/botanical_corner.svg" alt="" class="botanical-frame botanical-top-right" aria-hidden="true">
+
+  <!-- Header Superior com Navegação Suave -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="#hero" class="header-brand">
+        <span class="brand-cursive">De repente</span>
+        <span class="brand-number">40!</span>
+      </a>
+
+      <nav class="header-nav">
+        <a href="#festa" class="nav-link">A Festa</a>
+        <a href="#detalhes" class="nav-link">Informações</a>
+        <a href="#cronograma" class="nav-link">Programação</a>
+        <a href="#mural" class="nav-link">Mural de Recados</a>
+        <a href="#presentes" class="nav-link">Presentes</a>
+      </nav>
+
+      <a href="#detalhes" class="header-rsvp-btn">Confirmar Presença</a>
+    </div>
+  </header>
+
+  <!-- Botão Flutuante de Música / Vibração do Ambiente -->
+  <button type="button" id="audioToggleBtn" class="floating-audio-toggle" title="Tocar som ambiente festivo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 18V5l12-2v13"></path>
+      <circle cx="6" cy="18" r="3"></circle>
+      <circle cx="18" cy="16" r="3"></circle>
+    </svg>
+    <span>Música Ambiente</span>
+  </button>
+
+  <!-- Container Geral da Aplicação -->
+  <main class="site-wrapper">
+
+    <!-- ================================================================
+         ATO 1: HERO SECTION — CONVITE PRINCIPAL
+         ================================================================ -->
+    <section class="hero-section" id="hero">
+      <div class="hero-content">
+        
+        <p class="hero-invite-tag">Você está convidado(a)<br>para comemorar comigo...</p>
+        
+        <!-- Coração Rabiscado Oficial -->
+        <svg class="hero-heart-svg" viewBox="0 0 40 40" fill="none" stroke="#5C220E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 34 C12 26 4 20 4 12 C4 6 9 3 14 3 C18 3 20 6 20 6 C20 6 22 3 26 3 C31 3 36 6 36 12 C36 20 28 26 20 34 Z"/>
+        </svg>
+
+        <div class="hero-title-group">
+          <span class="hero-cursive-title">De repente</span>
+          
+          <div class="hero-big-number-wrap">
+            <span class="hero-big-number">40!</span>
+            
+            <!-- Raios Animados ao Redor do 40 -->
+            <svg class="hero-rays-svg" viewBox="0 0 300 200" fill="none" stroke="#C84B1C" stroke-width="4" stroke-linecap="round">
+              <path d="M40 70 L15 65" />
+              <path d="M35 100 L10 100" />
+              <path d="M42 130 L20 138" />
+              <path d="M260 70 L285 65" />
+              <path d="M265 100 L290 100" />
+              <path d="M258 130 L280 138" />
+            </svg>
+          </div>
+        </div>
+
+        <p class="hero-subtitle">
+          E que venha essa nova fase<br>
+          com muita alegria, saúde e bons amigos!
+        </p>
+
+        <!-- Pílulas Rápidas de Resumo do Evento -->
+        <div class="hero-quick-badges">
+          <span class="hero-badge-pill">📅 Dia 03/04 • 13h</span>
+          <span class="hero-badge-pill">🍲 Feijoada Completa</span>
+          <span class="hero-badge-pill">🥁 Pagode ao Vivo</span>
+          <span class="hero-badge-pill">📍 Espaço WM Prime</span>
+        </div>
+
+        <div class="hero-scroll-indicator">
+          <span>Role para Explorar</span>
+          <div class="scroll-mouse">
+            <div class="scroll-wheel"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================================================================
+         SEÇÃO: CARTA DA MILLENA — SOBRE OS 40 ANOS
+         ================================================================ -->
+    <section class="welcome-letter-section">
+      <div class="letter-card">
+        <div class="letter-avatar-wrap">
+          <span>🌸</span>
+        </div>
+        <h2 class="letter-title">Cheguei aos 40 com o coração cheio de gratidão!</h2>
+        <p class="letter-body">
+          Quatro décadas de histórias, aprendizados, abraços apertados e momentos inesquecíveis.
+          Para celebrar esse marco tão especial da minha vida, não poderia faltar aquilo que mais amo:
+          comida boa, cerveja gelada, a energia contagiante do samba e, principalmente, 
+          <strong>a presença de cada um de vocês</strong> que fez e faz parte da minha caminhada!
+        </p>
+        <span class="letter-signature">Com amor, Millena ❤️</span>
+      </div>
+    </section>
+
+
+    <!-- ================================================================
+         ATO 2: FEIJOADA E MUITO PAGODE!
+         ================================================================ -->
+    <section class="party-section" id="festa">
+      <p class="party-pre-title">Teremos uma deliciosa</p>
+
+      <div class="party-banner-container">
+        <!-- Pincelada Terracota Oficial em SVG -->
+        <svg class="brush-stroke-svg" viewBox="0 0 520 120" preserveAspectRatio="none" fill="#C84B1C">
+          <path d="M15,45 C75,25 210,18 360,24 C450,28 505,38 510,65 C512,85 480,95 380,98 C220,102 65,96 18,80 C6,70 5,55 15,45 Z" />
+        </svg>
+
+        <h2 class="party-banner-text">Feijoada e muito Pagode!</h2>
+
+        <!-- Notas Musicais Flutuantes -->
+        <svg class="music-note-icon note-left" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+        </svg>
+        <svg class="music-note-icon note-right" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+        </svg>
+      </div>
+
+      <!-- Grade de Experiências Completas da Festa -->
+      <div class="menu-cards-grid">
+        <div class="menu-feature-card">
+          <div class="feature-card-icon">
+            <img src="assets/images/feijoada_badge.svg" alt="Feijoada">
+          </div>
+          <h3 class="feature-card-title">Feijoada Completa</h3>
+          <p class="feature-card-desc">Carnes nobres selecionadas, couve refogada no alho, torresminho crocante, farofa artesanal, vinagrete e laranjinha fresca.</p>
+        </div>
+
+        <div class="menu-feature-card">
+          <div class="feature-card-icon">
+            <img src="assets/images/pandeiro_badge.svg" alt="Pagode">
+          </div>
+          <h3 class="feature-card-title">Roda de Pagode Ao Vivo</h3>
+          <p class="feature-card-desc">Grupo de samba de raiz e pagode com repertório nostálgico, animado e contagiante do início ao fim!</p>
+        </div>
+
+        <div class="menu-feature-card">
+          <div class="feature-card-icon">
+            <img src="assets/images/gifts/gin.svg" alt="Drinks & Chopp">
+          </div>
+          <h3 class="feature-card-title">Open Bar & Chopp Gelado</h3>
+          <p class="feature-card-desc">Chopp artesanal estupidamente gelado, caipirinhas com frutas da estação, drinks especiais, cerveja e refrigerantes.</p>
+        </div>
+
+        <div class="menu-feature-card">
+          <div class="feature-card-icon">
+            <img src="assets/images/gifts/espumante.svg" alt="Doces & Brinde">
+          </div>
+          <h3 class="feature-card-title">Bolo, Doces & Brinde</h3>
+          <p class="feature-card-desc">Mesa de doces finos, bolo comemorativo de aniversário, borbulhas de espumante e cafezinho com petit four.</p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================================================================
+         ATO 3: DATA, HORÁRIO, LOCAL & CRONOGRAMA
+         ================================================================ -->
+    <section class="event-details-section" id="detalhes">
+      
+      <div class="details-grid">
+        <!-- Card Dia -->
+        <div class="info-glass-card">
+          <div class="info-icon-wrap">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </div>
+          <span class="info-label">Dia</span>
+          <strong class="info-value">03/04</strong>
+        </div>
+
+        <!-- Card Horário -->
+        <div class="info-glass-card">
+          <div class="info-icon-wrap">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+          </div>
+          <span class="info-label">Horário</span>
+          <strong class="info-value">13h</strong>
+        </div>
+
+        <!-- Card Local -->
+        <div class="info-glass-card">
+          <div class="info-icon-wrap">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+          </div>
+          <span class="info-label">Local</span>
+          <strong class="info-value">Espaço WM prime</strong>
+        </div>
+      </div>
+
+      <!-- Contador Regressivo Ao Vivo -->
+      <div class="countdown-container">
+        <h3 class="countdown-title">Faltam apenas...</h3>
+        <div class="countdown-grid">
+          <div class="countdown-box">
+            <span class="countdown-number" id="cdDays">00</span>
+            <span class="countdown-unit">Dias</span>
+          </div>
+          <div class="countdown-box">
+            <span class="countdown-number" id="cdHours">00</span>
+            <span class="countdown-unit">Horas</span>
+          </div>
+          <div class="countdown-box">
+            <span class="countdown-number" id="cdMinutes">00</span>
+            <span class="countdown-unit">Minutos</span>
+          </div>
+          <div class="countdown-box">
+            <span class="countdown-number" id="cdSeconds">00</span>
+            <span class="countdown-unit">Segundos</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cronograma do Dia -->
+      <div class="schedule-card" id="cronograma">
+        <div class="schedule-header">
+          <h3>Programação do Dia 🎉</h3>
+          <p style="color: var(--coffee-light);">Tudo planejado para um dia perfeito de comemoração:</p>
+        </div>
+        <div class="timeline-list">
+          <div class="timeline-item">
+            <span class="timeline-time">13:00</span>
+            <div class="timeline-desc">
+              <h4>Recepção, Petiscos & Chopp Geladinho</h4>
+              <p>Chegada dos convidados com caldinho de feijão, pastéis crocantes e boas-vindas.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">14:00</span>
+            <div class="timeline-desc">
+              <h4>Feijoada Completa Servida</h4>
+              <p>Mesa farta de feijoada com carnes nobres e todos os acompanhamentos.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">15:30</span>
+            <div class="timeline-desc">
+              <h4>Roda de Pagode Ao Vivo</h4>
+              <p>O som do cavaquinho e do pandeiro começa para colocar todo mundo pra dançar!</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">18:00</span>
+            <div class="timeline-desc">
+              <h4>Parabéns dos 40 & Brinde com Espumante</h4>
+              <p>Momento emocionante de cantar os parabéns, cortar o bolo e brindar a vida.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-time">18:30+</span>
+            <div class="timeline-desc">
+              <h4>Resenha & Muita Dança</h4>
+              <p>A festa continua sem hora pra acabar!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica de Traje (Dress Code) -->
+      <div class="dresscode-card">
+        <div class="dresscode-title">👗 Traje Sugerido</div>
+        <p class="dresscode-desc">
+          <strong>Esporte Fino Descontraído / Tropical:</strong> Venha com uma roupa confortável para dançar e curtir! 
+          Cores alegres, florais, tons terrosos ou claros combinam perfeitamente com a energia do nosso dia.
+        </p>
+      </div>
+
+      <!-- Linha de Ações: RSVP, Como Chegar e Agenda -->
+      <div class="event-actions-row">
+        <a href="#" id="rsvpWhatsAppBtn" target="_blank" class="btn-rsvp">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92z"/>
+          </svg>
+          <span>Confirmar Presença (RSVP)</span>
+        </a>
+
+        <a href="#" id="openMapsBtn" target="_blank" class="btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+            <line x1="8" y1="2" x2="8" y2="18"></line>
+            <line x1="16" y1="6" x2="16" y2="22"></line>
+          </svg>
+          <span>Google Maps</span>
+        </a>
+
+        <a href="#" id="openWazeBtn" target="_blank" class="btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M16 12l-4-4-4 4M12 8v8"></path>
+          </svg>
+          <span>Waze</span>
+        </a>
+
+        <a href="#" id="addToGCalBtn" target="_blank" class="btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <span>Salvar na Agenda</span>
+        </a>
+      </div>
+
+    </section>
+
+
+    <!-- ================================================================
+         SEÇÃO: MURAL INTERATIVO DE RECADOS PARA A MILLENA
+         ================================================================ -->
+    <section class="guestbook-section" id="mural">
+      <div class="guestbook-card">
+        <div class="guestbook-header">
+          <h2>Mural de Recados & Carinho 💌</h2>
+          <p style="color: var(--coffee-light); margin-top: 0.35rem;">Deixe uma mensagem especial para a aniversariante guardar no coração:</p>
+        </div>
+
+        <form id="guestBookForm" class="guestbook-form">
+          <div class="form-row">
+            <input type="text" id="gbAuthor" class="form-input" placeholder="Seu Nome / Família" required>
+          </div>
+          <textarea id="gbMessage" class="form-input" rows="3" placeholder="Escreva aqui seu recadinho de carinho para os 40 anos da Millena..." required></textarea>
+          <button type="submit" class="btn-rsvp" style="border: none; cursor: pointer; align-self: flex-start;">
+            <span>Publicar no Mural ✨</span>
+          </button>
+        </form>
+
+        <div class="guestbook-grid" id="guestBookGrid">
+          <!-- Renderizado dinamicamente via animations.js -->
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================================================================
+         ATO 4: LISTA DE PRESENTES INTERATIVA
+         ================================================================ -->
+    <section class="gifts-section" id="presentes">
+      <div class="gifts-header-wrap">
+        <span class="gifts-section-tag">Celebre Comigo</span>
+        <h2 class="gifts-main-title">Lista de Presentes & Mimos</h2>
+        <p class="gifts-desc">
+          O melhor presente é ter você comemorando comigo! Mas se quiser me mimar nessa data especial, 
+          escolha uma opção abaixo. Você pode contribuir via <strong>PIX direto</strong> com valor exato ou levar o <strong>presente físico</strong> no dia!
+        </p>
+      </div>
+
+      <!-- Filtros por Categoria -->
+      <div class="category-filters-container" id="categoryFilters"></div>
+
+      <!-- Grade dos Cards de Presente com Efeito 3D Tilt -->
+      <div class="gifts-grid" id="giftsGrid"></div>
+    </section>
+
+
+    <!-- ================================================================
+         SEÇÃO: PERGUNTAS FREQUENTES (FAQ)
+         ================================================================ -->
+    <section class="faq-section">
+      <div class="faq-header">
+        <h2>Dúvidas Frequentes 💡</h2>
+      </div>
+
+      <div class="faq-accordion">
+        <div class="faq-item open">
+          <button type="button" class="faq-question">
+            <span>Posso levar crianças e família?</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-answer">
+            Com certeza! A festa é um ambiente acolhedor, familiar e festivo, preparado para receber quem amamos com todo o conforto.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button type="button" class="faq-question">
+            <span>Tem estacionamento no local?</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-answer">
+            Sim! O Espaço WM Prime conta com opções de estacionamento e fácil acesso para motoristas de aplicativo (Uber/99).
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button type="button" class="faq-question">
+            <span>Até que horas vai a festa?</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-answer">
+            Começamos às 13h com a recepção e a feijoada, o pagode ao vivo segue pela tarde e a resenha vai até a noite!
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button type="button" class="faq-question">
+            <span>Como funciona a lista de presentes por PIX?</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-answer">
+            É 100% seguro, direto e sem intermediários! Ao clicar no presente desejado, o site gera o QR Code e o código "Copia e Cola" já com o valor exato para você pagar no seu banco e enviar o comprovante no WhatsApp.
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ================================================================
+       RODAPÉ COMPLETO
+       ================================================================ -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-title">De repente 40!</div>
+      <p class="footer-tagline">Celebrando quatro décadas de vida com quem faz meu mundo mais bonito.</p>
+      <p class="footer-copy">© 2026 • Feito com muito amor para o aniversário da Millena ✨</p>
+    </div>
+  </footer>
+
+
+  <!-- ================================================================
+       MODAL 1: PAGAMENTO VIA PIX (100% GRÁTIS - PADRÃO BACEN EMVCo)
+       ================================================================ -->
+  <div class="modal-overlay" id="pixModal" role="dialog" aria-modal="true" aria-labelledby="pixModalTitle">
+    <div class="modal-card">
+      <button type="button" class="modal-close-btn" data-close-modal aria-label="Fechar modal">&times;</button>
+      
+      <h3 class="modal-title" id="pixModalTitle">Presentear via PIX</h3>
+      <p class="modal-desc" id="pixModalDesc">Escaneie o QR Code no app do seu banco ou copie o código PIX.</p>
+
+      <div id="pixFixedAmount" class="pix-fixed-value">R$ 0,00</div>
+
+      <div id="pixCustomAmountWrap" class="pix-input-group" style="display: none;">
+        <label for="customPixAmount" class="pix-input-label">Digite o valor que deseja presentear (R$):</label>
+        <input type="number" id="customPixAmount" class="pix-input-text" min="1" step="5" value="100.00">
+      </div>
+
+      <div class="pix-qr-wrapper" id="pixQrCodeContainer"></div>
+
+      <div class="pix-copy-row">
+        <input type="text" id="pixCopyCode" class="pix-copy-input" readonly>
+        <button type="button" id="copyPixBtn" class="btn-copy">
+          <span>Copiar Código</span>
+        </button>
+      </div>
+
+      <a href="#" id="whatsappPixNotifyBtn" target="_blank" class="btn-whatsapp-notify">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92z"/>
+        </svg>
+        <span>Já fiz o PIX! Enviar Comprovante</span>
+      </a>
+    </div>
+  </div>
+
+
+  <!-- ================================================================
+       MODAL 2: CONFIRMAR PRESENTE FÍSICO
+       ================================================================ -->
+  <div class="modal-overlay" id="physicalModal" role="dialog" aria-modal="true" aria-labelledby="physicalModalTitle">
+    <div class="modal-card">
+      <button type="button" class="modal-close-btn" data-close-modal aria-label="Fechar modal">&times;</button>
+      
+      <h3 class="modal-title" id="physicalModalTitle">Dar Presente Físico</h3>
+      <p class="modal-desc" id="physicalModalHint">Dica: Leve com todo o carinho no dia da comemoração!</p>
+
+      <form id="physicalForm">
+        <div class="pix-input-group">
+          <label for="guestName" class="pix-input-label">Seu Nome / Família: *</label>
+          <input type="text" id="guestName" class="pix-input-text" placeholder="Ex: Ana & Carlos" required>
+        </div>
+
+        <div class="pix-input-group">
+          <label for="guestMessage" class="pix-input-label">Mensagem Carinhosa (Opcional):</label>
+          <textarea id="guestMessage" class="pix-input-text" rows="3" placeholder="Deixe um recadinho especial para os 40 anos da Millena..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-whatsapp-notify" style="border: none; cursor: pointer;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92z"/>
+          </svg>
+          <span>Confirmar e Avisar no WhatsApp</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- Notificação Toast Flutuante -->
+  <div id="toastNotification" class="toast-pill"></div>
+
+
+  <!-- ================================================================
+       SCRIPTS
+       ================================================================ -->
+  <!-- GSAP & ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- QRCode.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <!-- Módulos do Projeto -->
+  <script src="js/config.js"></script>
+  <script src="js/pix.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/gifts.js"></script>
+  <script src="js/main.js"></script>
+
+</body>
+</html>

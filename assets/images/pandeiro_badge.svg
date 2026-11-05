@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="100%" height="100%">
+  <defs>
+    <filter id="pandeiroShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="8" stdDeviation="8" flood-color="#5C220E" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <g filter="url(#pandeiroShadow)" transform="rotate(-15 120 120)">
+    <!-- Aro de Madeira Nobre -->
+    <ellipse cx="120" cy="120" rx="90" ry="75" fill="#8A4A28" stroke="#5C220E" stroke-width="4"/>
+    <ellipse cx="120" cy="118" rx="84" ry="70" fill="#E6BA88"/>
+    <!-- Pele de Couro do Pandeiro -->
+    <ellipse cx="120" cy="116" rx="80" ry="66" fill="#FBF3E6"/>
+    <!-- Ferragens / Parafusos e Platinelas -->
+    <circle cx="34" cy="118" r="7" fill="#E5A93C" stroke="#B37D1A" stroke-width="1.5"/>
+    <circle cx="206" cy="118" r="7" fill="#E5A93C" stroke="#B37D1A" stroke-width="1.5"/>
+    <circle cx="70" cy="55" r="7" fill="#E5A93C" stroke="#B37D1A" stroke-width="1.5"/>
+    <circle cx="170" cy="55" r="7" fill="#E5A93C" stroke="#B37D1A" stroke-width="1.5"/>
+    <circle cx="70" cy="180" r="7" fill="#E5A93C" stroke="#B37D1A" stroke-width="1.5"/>
+    <circle cx="170" cy="180" r="7" fill="#E5A93C" stroke="#B37D1A" stroke-width="1.5"/>
+    <!-- Platinelas de Metal Prateado / Dourado -->
+    <ellipse cx="34" cy="118" rx="12" ry="5" fill="#FFF8EE" stroke="#E5A93C" stroke-width="2"/>
+    <ellipse cx="206" cy="118" rx="12" ry="5" fill="#FFF8EE" stroke="#E5A93C" stroke-width="2"/>
+    <ellipse cx="70" cy="55" rx="10" ry="5" fill="#FFF8EE" stroke="#E5A93C" stroke-width="2"/>
+    <ellipse cx="170" cy="55" rx="10" ry="5" fill="#FFF8EE" stroke="#E5A93C" stroke-width="2"/>
+  </g>
+</svg>

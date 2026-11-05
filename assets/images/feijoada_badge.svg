@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="100%" height="100%">
+  <defs>
+    <filter id="clayShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#3D1408" flood-opacity="0.3"/>
+    </filter>
+    <linearGradient id="clayPot" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4A1A0A"/>
+      <stop offset="50%" stop-color="#331005"/>
+      <stop offset="100%" stop-color="#240B03"/>
+    </linearGradient>
+  </defs>
+  <!-- Panela de Barro / Feijoada -->
+  <g filter="url(#clayShadow)">
+    <!-- Alças da Panela -->
+    <path d="M35 125 C25 125 25 145 38 145" fill="none" stroke="#4A1A0A" stroke-width="8" stroke-linecap="round"/>
+    <path d="M205 125 C215 125 215 145 202 145" fill="none" stroke="#4A1A0A" stroke-width="8" stroke-linecap="round"/>
+    <!-- Corpo da Panela -->
+    <ellipse cx="120" cy="115" rx="80" ry="24" fill="#331005"/>
+    <path d="M40 115 C40 165 65 195 120 195 C175 195 200 165 200 115 Z" fill="url(#clayPot)"/>
+    <!-- Boca / Feijoada Fumegante -->
+    <ellipse cx="120" cy="115" rx="72" ry="18" fill="#1A0702"/>
+    <!-- Carnes nobres e louro -->
+    <rect x="95" y="108" width="22" height="14" rx="4" fill="#BA3D11"/>
+    <rect x="125" y="112" width="18" height="12" rx="3" fill="#BA3D11"/>
+    <ellipse cx="80" cy="114" rx="8" ry="5" fill="#E5A93C"/>
+    <!-- Folhinha de Louro -->
+    <path d="M110 116 Q122 104 135 110 Q122 118 110 116 Z" fill="#6E7346"/>
+    <!-- Vapor aromático -->
+    <path d="M100 85 Q90 65 105 45" stroke="#FDF3E7" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.6"/>
+    <path d="M125 80 Q135 60 120 40" stroke="#FDF3E7" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.6"/>
+    <path d="M145 85 Q140 68 150 50" stroke="#FDF3E7" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+  </g>
+</svg>

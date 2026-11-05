@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgDiff" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDF3E7"/>
+      <stop offset="100%" stop-color="#F5DEBE"/>
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="90" fill="url(#bgDiff)" stroke="#6E7346" stroke-width="1.5"/>
+  <!-- Frasco de Vidro / Cerâmica do Difusor -->
+  <rect x="75" y="105" width="50" height="50" rx="8" fill="#D35424"/>
+  <rect x="88" y="95" width="24" height="12" rx="3" fill="#E5A93C"/>
+  <rect x="84" y="118" width="32" height="24" rx="2" fill="#FDF3E7"/>
+  <!-- Varetas Aromáticas -->
+  <line x1="94" y1="100" x2="68" y2="40" stroke="#5C220E" stroke-width="3" stroke-linecap="round"/>
+  <line x1="98" y1="100" x2="90" y2="35" stroke="#5C220E" stroke-width="3" stroke-linecap="round"/>
+  <line x1="102" y1="100" x2="115" y2="38" stroke="#5C220E" stroke-width="3" stroke-linecap="round"/>
+  <line x1="106" y1="100" x2="135" y2="45" stroke="#5C220E" stroke-width="3" stroke-linecap="round"/>
+  <!-- Ondas de Aroma Perfumado -->
+  <path d="M72 32 Q78 25 72 18" stroke="#E5A93C" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <path d="M125 32 Q132 25 125 18" stroke="#E5A93C" stroke-width="2" stroke-linecap="round" fill="none"/>
+</svg>

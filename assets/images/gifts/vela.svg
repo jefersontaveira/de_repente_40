@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgCandle" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDF3E7"/>
+      <stop offset="100%" stop-color="#F5DEBE"/>
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="90" fill="url(#bgCandle)" stroke="#D35424" stroke-width="1.5"/>
+  <!-- Copo da Vela Artesanal -->
+  <rect x="70" y="85" width="60" height="70" rx="6" fill="#FDF3E7" stroke="#5C220E" stroke-width="2"/>
+  <rect x="78" y="105" width="44" height="32" rx="2" fill="#D35424"/>
+  <text x="100" y="125" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="bold" fill="#FFF" text-anchor="middle">AROMA 40</text>
+  <!-- Pavio & Chama -->
+  <line x1="100" y1="85" x2="100" y2="76" stroke="#5C220E" stroke-width="2" stroke-linecap="round"/>
+  <path d="M100 50 C92 62 92 74 100 76 C108 74 108 62 100 50 Z" fill="#E5A93C"/>
+  <path d="M100 62 C96 68 96 73 100 74 C104 73 104 68 100 62 Z" fill="#BA3D11"/>
+  <!-- Brilho ao redor -->
+  <circle cx="100" cy="65" r="18" fill="#E5A93C" fill-opacity="0.2"/>
+</svg>
