@@ -64,6 +64,13 @@ html {
   background-color: var(--bg-main);
   color: var(--coffee);
   font-family: var(--font-main);
+  scrollbar-gutter: stable; /* Previne o deslocamento do layout para a direita ao abrir modais */
+}
+
+@supports not (scrollbar-gutter: stable) {
+  html {
+    overflow-y: scroll; /* Fallback universal para navegadores antigos */
+  }
 }
 
 body {
@@ -1835,7 +1842,7 @@ body.modal-open {
   inset: 0;
   background: rgba(74, 26, 10, 0.65);
   backdrop-filter: blur(8px);
-  z-index: 100;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;

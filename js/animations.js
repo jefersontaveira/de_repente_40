@@ -693,7 +693,7 @@ class SiteAnimations {
     if (openAllBtn && modal) {
       openAllBtn.addEventListener("click", () => {
         modal.classList.add("active");
-        document.body.style.overflow = "hidden";
+        document.body.classList.add("modal-open");
         if (searchInput) searchInput.value = "";
         renderMessages();
       });
@@ -704,7 +704,7 @@ class SiteAnimations {
       const closeBtns = modal.querySelectorAll("[data-close-modal]");
       const closeModal = () => {
         modal.classList.remove("active");
-        document.body.style.overflow = "";
+        document.body.classList.remove("modal-open");
       };
 
       closeBtns.forEach((btn) => btn.addEventListener("click", closeModal));
