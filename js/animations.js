@@ -25,6 +25,14 @@ class SiteAnimations {
     this.initAudioAmbience();
     this.initGuestBook();
     this.initFaqAccordion();
+
+    // Garante recálculo perfeito dos gatilhos 3D do ScrollTrigger após carregamento de imagens e fontes
+    if (typeof ScrollTrigger !== "undefined") {
+      window.addEventListener("load", () => {
+        setTimeout(() => ScrollTrigger.refresh(), 150);
+      });
+      setTimeout(() => ScrollTrigger.refresh(), 1200);
+    }
   }
 
   /* ------------------------------------------------------------------
@@ -374,8 +382,9 @@ class SiteAnimations {
   }
 
   /* ------------------------------------------------------------------
-   * 5. COREOGRAFIA SEQUENCIAL DOS CARDS DE INFORMAÇÕES & CONTADOR (ATO 3)
-   * Montagem progressiva acoplada ao scroll com preview contínuo (sem telas em branco)
+   * 5. COREOGRAFIA DE MONTAGEM E DESMONTAGEM (VAI E VOLTA) DOS CARDS
+   * Os 4 elementos chegam no centro da tela, se montam, pausam para leitura
+   * e depois se desmontam da mesma forma (vai e volta) conforme o scroll!
    * ------------------------------------------------------------------ */
   initEventDetailsAnimations() {
     if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") return;
@@ -388,44 +397,98 @@ class SiteAnimations {
 
     if (!assemblyStage || !cardDia || !cardHorario || !cardLocal || !cardContador) return;
 
-    // A montagem é acoplada de forma fluida ao scroll, sem criar buracos em branco!
-    // Os cards já começam visíveis em preview elegante (opacity: 0.65) e se encaixam sob o controle do scroll.
+    // Estado inicial: desmontados ligeiramente afastados (sem criar vazio gigante)
+    gsap.set(cardDia, { x: -140, y: -20, rotate: -8, scale: 0.88, opacity: 0 });
+    gsap.set(cardHorario, { y: -90, scale: 0.88, opacity: 0 });
+    gsap.set(cardLocal, { x: 140, y: -20, rotate: 8, scale: 0.88, opacity: 0 });
+    gsap.set(cardContador, { y: 100, scale: 0.88, opacity: 0 });
+
     const detailsTl = gsap.timeline({
       scrollTrigger: {
         trigger: assemblyStage,
-        start: "top 90%",
-        end: "center 55%",
+        start: "top 85%", // Inicia montagem assim que entra na tela (zero espaço vazio)
+        end: "bottom 15%",
         scrub: 0.5
       }
     });
 
-    // 1. Dia 03/04: surge primeiro da esquerda (já visível a 65%, desliza suavemente até 0)
-    detailsTl.fromTo(cardDia,
-      { x: -50, opacity: 0.65 },
-      { x: 0, opacity: 1, duration: 0.5, ease: "power1.out" },
-      0.00
-    );
+    // FASE 1: MONTAGEM NO CENTRO (0.00 até 0.35)
+    detailsTl.to(cardDia, {
+      x: 0,
+      y: 0,
+      rotate: 0,
+      scale: 1,
+      opacity: 1,
+      duration: 0.35,
+      ease: "power1.out"
+    }, 0.00);
 
-    // 2. Horário 13h: quando Dia está na metade do caminho (0.25), surge de baixo
-    detailsTl.fromTo(cardHorario,
-      { y: 40, opacity: 0.65 },
-      { y: 0, opacity: 1, duration: 0.5, ease: "power1.out" },
-      0.25
-    );
+    detailsTl.to(cardHorario, {
+      y: 0,
+      scale: 1,
+      opacity: 1,
+      duration: 0.35,
+      ease: "power1.out"
+    }, 0.05);
 
-    // 3. Local Espaço WM prime: quando Horário está na metade do caminho (0.50), surge da direita
-    detailsTl.fromTo(cardLocal,
-      { x: 50, opacity: 0.65 },
-      { x: 0, opacity: 1, duration: 0.5, ease: "power1.out" },
-      0.50
-    );
+    detailsTl.to(cardLocal, {
+      x: 0,
+      y: 0,
+      rotate: 0,
+      scale: 1,
+      opacity: 1,
+      duration: 0.35,
+      ease: "power1.out"
+    }, 0.10);
 
-    // 4. Faltam apenas... (Contador): aparece por último montando o encaixe perfeito dos quatro
-    detailsTl.fromTo(cardContador,
-      { y: 35, scale: 0.96, opacity: 0.65 },
-      { y: 0, scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.2)" },
-      0.70
-    );
+    detailsTl.to(cardContador, {
+      y: 0,
+      scale: 1,
+      opacity: 1,
+      duration: 0.35,
+      ease: "power1.out"
+    }, 0.15);
+
+    // FASE 2: PLATÔ DE LEITURA (0.35 até 0.70)
+    // Permanece 100% montado no centro para leitura
+    detailsTl.to({}, { duration: 0.35 }, 0.35);
+
+    // FASE 3: DESMONTAGEM / VAI E VOLTA (0.70 até 1.00)
+    detailsTl.to(cardDia, {
+      x: -140,
+      y: -20,
+      rotate: -8,
+      scale: 0.88,
+      opacity: 0,
+      duration: 0.30,
+      ease: "power1.in"
+    }, 0.70);
+
+    detailsTl.to(cardHorario, {
+      y: -90,
+      scale: 0.88,
+      opacity: 0,
+      duration: 0.30,
+      ease: "power1.in"
+    }, 0.70);
+
+    detailsTl.to(cardLocal, {
+      x: 140,
+      y: -20,
+      rotate: 8,
+      scale: 0.88,
+      opacity: 0,
+      duration: 0.30,
+      ease: "power1.in"
+    }, 0.70);
+
+    detailsTl.to(cardContador, {
+      y: 100,
+      scale: 0.88,
+      opacity: 0,
+      duration: 0.30,
+      ease: "power1.in"
+    }, 0.70);
   }
 
   /* ------------------------------------------------------------------
