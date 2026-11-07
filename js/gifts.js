@@ -146,7 +146,7 @@ class GiftManager {
         : `<span class="price-tag">${this.formatCurrency(gift.valor)}</span>`;
 
       const badgeHtml = gift.destaque 
-        ? `<div class="card-badge">Destaque Especial ✨</div>`
+        ? `<div class="card-badge">Destaque Especial</div>`
         : isReserved
         ? `<div class="card-badge reserved">Escolhido por você 💖</div>`
         : "";
@@ -271,7 +271,7 @@ class GiftManager {
         });
       }
 
-      this.showToast("Presente registrado com sucesso na lista da Millena! Muito obrigado pelo carinho! 💖✨");
+      this.showToast("Presente registrado com sucesso na lista da Millena! Muito obrigado pelo carinho! 💖");
       
       setTimeout(() => {
         if (confirmBtn) {
@@ -341,7 +341,7 @@ class GiftManager {
     const copyBtn = document.getElementById("copyPixBtn");
 
     if (ok) {
-      this.showToast("Código PIX Copiado com Sucesso! 📋✨");
+      this.showToast("Código PIX Copiado com Sucesso! 📋");
       if (copyBtn) {
         const originalText = copyBtn.innerHTML;
         copyBtn.innerHTML = `<span>Copiado! ✅</span>`;
@@ -419,7 +419,7 @@ class GiftManager {
         });
       }
 
-      this.showToast("Presente físico confirmado com sucesso na lista da Millena! 🎁✨");
+      this.showToast("Presente físico confirmado com sucesso na lista da Millena! 🎁");
       
       setTimeout(() => {
         if (submitBtn) {
@@ -432,7 +432,7 @@ class GiftManager {
 
     } catch (err) {
       console.error("Erro ao registrar presente físico:", err);
-      this.showToast("Presente físico reservado com carinho! 🎁✨");
+      this.showToast("Presente físico reservado com carinho! 🎁");
       this.closeAllModals();
       this.renderGifts();
     }

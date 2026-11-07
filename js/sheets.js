@@ -148,7 +148,7 @@ class SheetsService {
           return {
             success: false,
             alreadyConfirmed: true,
-            message: `Oi ${payload.name}! Você já confirmou sua presença anteriormente. Estamos te esperando com muito amor! 🎉✨`
+            message: `Oi ${payload.name}! Você já confirmou sua presença anteriormente. Estamos te esperando com muito amor!`
           };
         }
       }
@@ -262,14 +262,14 @@ class RsvpModalManager {
     // Mensagem padrão configurada
     if (this.messageInput && !this.messageInput.value) {
       const defMsg = window.SITE_CONFIG?.evento?.rsvpMensagem || 
-        "Oi Millena! Confirmo minha presença com muita alegria no seu aniversário de 40 anos no Espaço WM Prime! 🎉✨";
+        "Oi Millena! Confirmo minha presença com muita alegria no seu aniversário de 40 anos no Espaço WM Prime!";
       this.messageInput.value = defMsg;
     }
 
     // Se já tiver confirmado antes no dispositivo, avisa logo de início com carinho
     if (UserManager.isRsvpConfirmed() && savedName && this.alertBox) {
       this.alertBox.className = "rsvp-alert-box info";
-      this.alertBox.innerHTML = `<strong>Você já confirmou sua presença! 🎉</strong><br>Estamos muito felizes em celebrar juntos, ${savedName}! Caso queira atualizar sua mensagem, basta enviar novamente.`;
+      this.alertBox.innerHTML = `<strong>Você já confirmou sua presença!</strong><br>Estamos muito felizes em celebrar juntos, ${savedName}! Caso queira atualizar sua mensagem, basta enviar novamente.`;
       this.alertBox.style.display = "block";
     }
 
@@ -302,7 +302,7 @@ class RsvpModalManager {
     // Estado de carregamento do botão
     const originalText = this.submitBtn.innerHTML;
     this.submitBtn.disabled = true;
-    this.submitBtn.innerHTML = `<span>Verificando e confirmando... ⏳</span>`;
+    this.submitBtn.innerHTML = `<span>Verificando e confirmando...</span>`;
 
     try {
       const response = await SheetsService.submitRsvp({ name, message });
@@ -311,11 +311,11 @@ class RsvpModalManager {
         // CONVIDADO JÁ ESTÁ NA PLANILHA
         UserManager.setRsvpConfirmed(true);
         this.showAlert(
-          `<strong>Presença Já Confirmada! 🎉</strong><br>${response.message || 'Seu nome já está na lista oficial de convidados da Millena. Te esperamos lá!'}`,
+          `<strong>Presença Já Confirmada!</strong><br>${response.message || 'Seu nome já está na lista oficial de convidados da Millena. Te esperamos lá!'}`,
           "warning"
         );
         this.submitBtn.disabled = false;
-        this.submitBtn.innerHTML = `<span>Presença Já Confirmada ✅</span>`;
+        this.submitBtn.innerHTML = `<span>Presença Já Confirmada</span>`;
         return;
       }
 
@@ -323,16 +323,16 @@ class RsvpModalManager {
         // SUCESSO: PRESENÇA CONFIRMADA PELA PRIMEIRA VEZ
         UserManager.setRsvpConfirmed(true);
         this.showAlert(
-          `<strong>Presença Confirmada com Sucesso! 💖</strong><br>Obrigado, ${name}! Seu lugar na comemoração está mais que garantido!`,
+          `<strong>Presença Confirmada com Sucesso!</strong><br>Obrigado, ${name}! Seu lugar na comemoração está mais que garantido!`,
           "success"
         );
 
-        this.submitBtn.innerHTML = `<span>Presença Confirmada! ✅</span>`;
+        this.submitBtn.innerHTML = `<span>Presença Confirmada!</span>`;
         
         // Dispara toast global
         const toast = document.getElementById("toastNotification");
         if (toast) {
-          toast.textContent = `Presença de ${name} confirmada com sucesso! 🎉✨`;
+          toast.textContent = `Presença de ${name} confirmada com sucesso!`;
           toast.classList.add("show");
           setTimeout(() => toast.classList.remove("show"), 4000);
         }

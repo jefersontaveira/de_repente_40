@@ -25,7 +25,7 @@ const SITE_CONFIG = {
     dataContador: new Date(2027, 3, 3, 13, 0, 0),
     googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=Espa%C3%A7o+WM+Prime",
     wazeUrl: "https://waze.com/ul?q=Espaço%20WM%20Prime",
-    rsvpMensagem: "Oi Millena! Confirmo minha presença com muita alegria no seu aniversário de 40 anos no Espaço WM Prime! 🎉✨"
+    rsvpMensagem: "Oi Millena! Confirmo minha presença com muita alegria no seu aniversário de 40 anos no Espaço WM Prime!"
   },
 
   // URL do Web App do Google Apps Script conectado à Planilha Google Sheets
@@ -44,9 +44,9 @@ const SITE_CONFIG = {
   whatsapp: {
     numero: "5585981311975",
     mensagemPadraoPix: (nomePresente, valor) =>
-      `Oi Millena! 🎉 Acabei de presentear você com "${nomePresente}" no valor de R$ ${valor.toFixed(2).replace('.', ',')} via PIX para comemorar seus 40 anos! Segue o comprovante em anexo. Que seu novo ciclo seja radiante e repleto de bênçãos! ❤️✨`,
+      `Oi Millena! 🎉 Acabei de presentear você com "${nomePresente}" no valor de R$ ${valor.toFixed(2).replace('.', ',')} via PIX para comemorar seus 40 anos! Segue o comprovante em anexo. Que seu novo ciclo seja radiante e repleto de bênçãos! ❤️`,
     mensagemPadraoFisico: (nomePresente, nomeConvidado, recado) =>
-      `Oi Millena! 🎁 Escolhi te levar de presente o item "${nomePresente}" para a sua festa de 40 anos! ${recado ? `"${recado}"` : ''} Com carinho, ${nomeConvidado || 'Seu Convidado'}. Mal posso esperar pela Feijoada e pelo Pagode! 🥁✨`
+      `Oi Millena! 🎁 Escolhi te levar de presente o item "${nomePresente}" para a sua festa de 40 anos! ${recado ? `"${recado}"` : ''} Com carinho, ${nomeConvidado || 'Seu Convidado'}. Mal posso esperar pela Feijoada e pelo Pagode! 🥁`
   },
 
   // Categorias da Lista de Presentes
@@ -54,7 +54,7 @@ const SITE_CONFIG = {
     { id: "todas", label: "Todos os Presentes" },
     { id: "fitness", label: "Fitness & Treino 🏋️‍♀️" },
     { id: "perfumes", label: "Perfumes & Beleza 🌸" },
-    { id: "acessorios", label: "Acessórios & Semijoias ✨" },
+    { id: "acessorios", label: "Acessórios & Semijoias" },
     { id: "casa", label: "Casa & Estilo 🏡" },
     { id: "cotas", label: "Cotas Livres & Mimos 💖" }
   ],

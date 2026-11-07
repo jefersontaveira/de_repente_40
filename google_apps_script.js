@@ -10,7 +10,11 @@
  * 3. Presentes Físicos (com nome de quem reservou)
  * 4. Cópia dos Recados do Mural
  * 
- * COMO USAR: Veja o passo a passo completo no chat ou no arquivo README.
+ * RECURSO AUTOMÁTICO:
+ * Se o script não estiver vinculado a uma planilha existente, ele CRIA
+ * AUTOMATICAMENTE uma nova planilha chamada:
+ * "De Repente 40! — Aniversário da Millena (Respostas)"
+ * diretamente no seu Google Drive!
  */
 
 function doPost(e) {
@@ -18,21 +22,21 @@ function doPost(e) {
   lock.tryLock(10000);
 
   try {
-    var rawData = e.postData ? e.postData.contents : null;
+    var rawData = (e && e.postData) ? e.postData.contents : null;
     var data = {};
 
     if (rawData) {
       try {
         data = JSON.parse(rawData);
       } catch (err) {
-        data = e.parameter || {};
+        data = (e && e.parameter) ? e.parameter : {};
       }
-    } else {
-      data = e.parameter || {};
+    } else if (e && e.parameter) {
+      data = e.parameter;
     }
 
     var action = data.action || "rsvp";
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var ss = getSpreadsheet();
     var response = { success: true };
 
     if (action === "check_rsvp") {
@@ -49,6 +53,8 @@ function doPost(e) {
       response = { success: false, message: "Ação não reconhecida: " + action };
     }
 
+    response.planilhaUrl = ss.getUrl();
+
     return ContentService.createTextOutput(JSON.stringify(response))
       .setMimeType(ContentService.MimeType.JSON);
 
@@ -62,20 +68,84 @@ function doPost(e) {
   }
 }
 
+/**
+ * Ao abrir a URL do script no navegador, exibe um painel visual com o link direto da planilha!
+ */
 function doGet(e) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var action = (e && e.parameter && e.parameter.action) ? e.parameter.action : "ping";
+  try {
+    var ss = getSpreadsheet();
+    var sheetUrl = ss.getUrl();
+    var sheetName = ss.getName();
 
-  if (action === "check_rsvp") {
-    var resp = handleCheckRsvp(ss, e.parameter);
-    return ContentService.createTextOutput(JSON.stringify(resp))
-      .setMimeType(ContentService.MimeType.JSON);
+    // Se a requisição pedir explicitamente JSON
+    if (e && e.parameter && e.parameter.format === "json") {
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "online",
+        planilhaNome: sheetName,
+        planilhaUrl: sheetUrl
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // Página visual elegante com o botão para abrir a planilha em 1 clique
+    var html = '<!DOCTYPE html>' +
+      '<html><head><meta charset="utf-8">' +
+      '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+      '<title>Planilha de Respostas — De Repente 40!</title>' +
+      '<style>' +
+      'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background: #FDF3E7; color: #4A1A0A; padding: 1.5rem; box-sizing: border-box; }' +
+      '.card { background: #FFFFFF; padding: 2.5rem 2rem; border-radius: 20px; border: 2px solid #C84B1C; text-align: center; max-width: 520px; width: 100%; box-shadow: 0 15px 40px rgba(74,26,10,0.12); }' +
+      'h1 { font-size: 1.8rem; margin: 0 0 0.5rem; color: #C84B1C; }' +
+      'p { margin: 0 0 2rem; color: #6D4C41; font-size: 1.05rem; line-height: 1.5; }' +
+      '.btn { display: inline-block; background: #C84B1C; color: #FFFFFF; padding: 1.1rem 2.2rem; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.15rem; box-shadow: 0 6px 20px rgba(200,75,28,0.35); transition: background 0.2s, transform 0.2s; }' +
+      '.btn:hover { background: #A03610; transform: translateY(-2px); }' +
+      '.info-box { margin-top: 2rem; padding: 1rem; background: #FBF7F2; border-radius: 12px; font-size: 0.9rem; color: #5C220E; text-align: left; }' +
+      '.info-box strong { color: #C84B1C; }' +
+      '</style></head><body>' +
+      '<div class="card">' +
+      '<h1>De Repente 40!</h1>' +
+      '<p>O sistema do aniversário da Millena está conectado e funcionando perfeitamente!</p>' +
+      '<a class="btn" href="' + sheetUrl + '" target="_blank">👉 Abrir Planilha Google</a>' +
+      '<div class="info-box">' +
+      '<div>📄 <strong>Arquivo:</strong> ' + sheetName + '</div>' +
+      '<div style="margin-top:0.4rem;">💡 As abas <em>Presencas</em>, <em>Presentes_PIX</em>, <em>Presentes_Fisicos</em> e <em>Mural_Recados</em> são criadas automaticamente conforme os envios no site.</div>' +
+      '</div>' +
+      '</div></body></html>';
+
+    return HtmlService.createHtmlOutput(html)
+      .setTitle("Planilha - De Repente 40!")
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "error",
+      message: err.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// --------------------------------------------------------------------
+// LOCALIZA OU CRIA AUTOMATICAMENTE A PLANILHA NO SEU GOOGLE DRIVE
+// --------------------------------------------------------------------
+function getSpreadsheet() {
+  // 1. Tenta obter a planilha vinculada (se o script foi aberto em Extensões > Apps Script)
+  try {
+    var activeSs = SpreadsheetApp.getActiveSpreadsheet();
+    if (activeSs) return activeSs;
+  } catch (e) {}
+
+  // 2. Se for um script autônomo, verifica se já criamos e salvamos o ID dela anteriormente
+  var props = PropertiesService.getScriptProperties();
+  var savedId = props.getProperty("DR40_SPREADSHEET_ID");
+  if (savedId) {
+    try {
+      return SpreadsheetApp.openById(savedId);
+    } catch (e) {}
   }
 
-  return ContentService.createTextOutput(JSON.stringify({
-    status: "online",
-    message: "Google Apps Script para 'De Repente 40!' está ativo e pronto!"
-  })).setMimeType(ContentService.MimeType.JSON);
+  // 3. Se ainda não existir nenhuma planilha, CRIA AUTOMATICAMENTE no Google Drive do usuário!
+  var newSs = SpreadsheetApp.create("De Repente 40! — Aniversário da Millena (Respostas)");
+  props.setProperty("DR40_SPREADSHEET_ID", newSs.getId());
+  return newSs;
 }
 
 // --------------------------------------------------------------------
@@ -98,7 +168,7 @@ function handleRsvp(ss, data) {
     return {
       success: false,
       alreadyConfirmed: true,
-      message: "Oi " + nome + "! Você já confirmou sua presença anteriormente. Estamos te esperando com muito amor! 🎉✨"
+      message: "Oi " + nome + "! Você já confirmou sua presença anteriormente. Estamos te esperando com muito amor!"
     };
   }
 
@@ -109,7 +179,7 @@ function handleRsvp(ss, data) {
   return {
     success: true,
     alreadyConfirmed: false,
-    message: "Presença confirmada com sucesso, " + nome + "! Te esperamos na festa! 🎉💖"
+    message: "Presença confirmada com sucesso, " + nome + "! Te esperamos na festa! 🎉"
   };
 }
 
@@ -251,4 +321,3 @@ function getOrCreateSheet(ss, sheetName, headers) {
   }
   return sheet;
 }
-

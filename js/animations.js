@@ -773,7 +773,7 @@ class SiteAnimations {
 
       const toast = document.getElementById("toastNotification");
       if (toast) {
-        toast.textContent = "Seu recado foi preso no mural com todo carinho! 💌✨";
+        toast.textContent = "Seu recado foi preso no mural com todo carinho! 💌";
         toast.classList.add("show");
         setTimeout(() => toast.classList.remove("show"), 3500);
       }
