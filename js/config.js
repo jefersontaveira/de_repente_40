@@ -30,7 +30,7 @@ const SITE_CONFIG = {
 
   // URL do Web App do Google Apps Script conectado à Planilha Google Sheets
   // Cole aqui a URL de Implantação da sua planilha após seguir o passo a passo.
-  sheetsUrl: "",
+  sheetsUrl: "https://script.google.com/macros/s/AKfycbz3FWGz_Q8KDrj-nkxzY-vnhpJQcI5LZnxEi1MFFMvb4pvDgjeQTx0J9v5YnCbHItwhVw/exec",
 
   // Dados para Pagamento e Confirmação via PIX (100% Gratuito - Padrão Banco Central EMVCo)
   pix: {
