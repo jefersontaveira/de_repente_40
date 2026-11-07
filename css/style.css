@@ -1639,21 +1639,26 @@ body.modal-open {
 }
 
 /* 4. Modal / Pop-up Amplo no PC e em Cards */
-.modal-mural-card {
-  max-width: 1200px; /* Amplo no PC */
-  width: 95vw;
-  max-height: 90vh;
+.modal-card.modal-mural-card,
+#allMessagesModal .modal-card {
+  max-width: 1320px; /* Amplo no PC */
+  width: 94vw;
+  max-height: 88vh;
   height: 86vh;
   display: flex;
   flex-direction: column;
-  padding: 2.5rem clamp(1.4rem, 3vw, 3rem);
+  padding: 2.2rem clamp(1.5rem, 3vw, 3rem);
   background: #FFFDF9;
   border: 2px solid var(--terracotta);
+  border-radius: var(--radius-lg);
+  overflow: hidden; /* O scroll fica por conta do feed interno */
+  box-shadow: var(--shadow-lg), 0 20px 60px rgba(74, 26, 10, 0.4);
 }
 
 .modal-mural-header {
   text-align: center;
   margin-bottom: 1.2rem;
+  flex-shrink: 0;
 }
 
 .mural-badge-tag {
@@ -1666,6 +1671,10 @@ body.modal-open {
 .mural-search-container {
   margin-bottom: 1.2rem;
   width: 100%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  flex-shrink: 0;
 }
 
 .mural-search-input {
@@ -1690,10 +1699,10 @@ body.modal-open {
 .modal-mural-feed {
   flex: 1;
   overflow-y: auto;
-  padding: 1.2rem 0.8rem;
+  padding: 1.5rem 1rem 2rem;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-  gap: 1.8rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
   align-content: start;
 }
 
@@ -1707,23 +1716,27 @@ body.modal-open {
 }
 
 /* Responsividade Mobile: cards viram lista vertical no celular */
-@media (max-width: 680px) {
+@media (max-width: 768px) {
   .guestbook-cards-grid,
   .guestbook-vertical-feed {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
 
-  .modal-mural-card {
+  .modal-card.modal-mural-card,
+  #allMessagesModal .modal-card {
+    width: 95vw;
+    max-width: 95vw;
     height: 92vh;
     max-height: 92vh;
-    padding: 1.8rem 1.2rem;
+    padding: 1.6rem 1rem;
   }
 
   .modal-mural-feed {
     display: flex;
     flex-direction: column;
     gap: 1.3rem;
+    padding: 0.8rem 0.3rem 1.5rem;
   }
 }
 
