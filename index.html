@@ -44,7 +44,6 @@
       <nav class="header-nav">
         <a href="#festa" class="nav-link">A Festa</a>
         <a href="#detalhes" class="nav-link">Informações</a>
-        <a href="#cronograma" class="nav-link">Programação</a>
         <a href="#mural" class="nav-link">Mural de Recados</a>
         <a href="#presentes" class="nav-link">Presentes</a>
       </nav>
@@ -317,59 +316,7 @@
         </div>
       </div>
 
-      <!-- Cronograma do Dia -->
-      <div class="schedule-card" id="cronograma">
-        <div class="schedule-header">
-          <h3>Programação do Dia 🎉</h3>
-          <p style="color: var(--coffee-light);">Tudo planejado para um dia perfeito de comemoração:</p>
-        </div>
-        <div class="timeline-list">
-          <div class="timeline-item">
-            <span class="timeline-time">13:00</span>
-            <div class="timeline-desc">
-              <h4>Recepção, Petiscos & Chopp Geladinho</h4>
-              <p>Chegada dos convidados com caldinho de feijão, pastéis crocantes e boas-vindas.</p>
-            </div>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-time">14:00</span>
-            <div class="timeline-desc">
-              <h4>Feijoada Completa Servida</h4>
-              <p>Mesa farta de feijoada com carnes nobres e todos os acompanhamentos.</p>
-            </div>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-time">15:30</span>
-            <div class="timeline-desc">
-              <h4>Roda de Pagode Ao Vivo</h4>
-              <p>O som do cavaquinho e do pandeiro começa para colocar todo mundo pra dançar!</p>
-            </div>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-time">18:00</span>
-            <div class="timeline-desc">
-              <h4>Parabéns dos 40 & Brinde com Espumante</h4>
-              <p>Momento emocionante de cantar os parabéns, cortar o bolo e brindar a vida.</p>
-            </div>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-time">18:30+</span>
-            <div class="timeline-desc">
-              <h4>Resenha & Muita Dança</h4>
-              <p>A festa continua sem hora pra acabar!</p>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Dica de Traje (Dress Code) -->
-      <div class="dresscode-card">
-        <div class="dresscode-title">👗 Traje Sugerido</div>
-        <p class="dresscode-desc">
-          <strong>Esporte Fino Descontraído / Tropical:</strong> Venha com uma roupa confortável para dançar e curtir! 
-          Cores alegres, florais, tons terrosos ou claros combinam perfeitamente com a energia do nosso dia.
-        </p>
-      </div>
 
       <!-- Linha de Ações: RSVP, Como Chegar e Agenda -->
       <div class="event-actions-row">
@@ -412,28 +359,55 @@
 
 
     <!-- ================================================================
-         SEÇÃO: MURAL INTERATIVO DE RECADOS PARA A MILLENA
+         SEÇÃO: MURAL INTERATIVO DE RECADOS PARA A MILLENA (ESTILO PAPEL & CALIGRAFIA)
          ================================================================ -->
     <section class="guestbook-section" id="mural">
-      <div class="guestbook-card">
-        <div class="guestbook-header">
-          <h2>Mural de Recados & Carinho 💌</h2>
-          <p style="color: var(--coffee-light); margin-top: 0.35rem;">Deixe uma mensagem especial para a aniversariante guardar no coração:</p>
-        </div>
+      <div class="guestbook-paper-desk">
 
-        <form id="guestBookForm" class="guestbook-form">
-          <div class="form-row">
-            <input type="text" id="gbAuthor" class="form-input" placeholder="Seu Nome / Família" required>
+        <!-- Formulário Estilo Bloco de Notas / Papel de Carta -->
+        <div class="guestbook-form-paper">
+          <div class="paper-washi-tape"></div>
+          <div class="guestbook-header">
+            <span class="paper-header-tag">Deixe sua homenagem</span>
+            <h2>Mural de Recados & Carinho 💌</h2>
+            <p class="paper-subtitle">Escreva uma mensagem especial para a aniversariante guardar no coração:</p>
           </div>
-          <textarea id="gbMessage" class="form-input" rows="3" placeholder="Escreva aqui seu recadinho de carinho para os 40 anos da Millena..." required></textarea>
-          <button type="submit" class="btn-rsvp" style="border: none; cursor: pointer; align-self: flex-start;">
-            <span>Publicar no Mural ✨</span>
-          </button>
-        </form>
 
-        <div class="guestbook-grid" id="guestBookGrid">
-          <!-- Renderizado dinamicamente via animations.js -->
+          <form id="guestBookForm" class="guestbook-form">
+            <div class="form-row">
+              <input type="text" id="gbAuthor" class="form-input paper-input" placeholder="Seu Nome / Família (ex: Mariana & Carlos)" required>
+            </div>
+            <textarea id="gbMessage" class="form-input paper-textarea" rows="4" placeholder="Escreva aqui seu recadinho de carinho para os 40 anos da Millena..." required></textarea>
+            <div class="form-submit-row">
+              <button type="submit" class="btn-submit-note">
+                <span>Prender no Mural ✨</span>
+              </button>
+            </div>
+          </form>
         </div>
+
+        <!-- Feed Vertical de Recados em Papel (Expansão até o final da tela) -->
+        <div class="guestbook-feed-wrapper">
+          <div class="guestbook-feed-title">
+            <span>Últimos Recadinhos de Amor</span>
+          </div>
+
+          <div class="guestbook-cards-grid" id="guestBookFeed">
+            <!-- Renderizado dinamicamente em formato de cards via animations.js -->
+          </div>
+
+          <!-- Botão para Visualizar Todos os Recados em Pop-up -->
+          <div class="guestbook-view-all-wrap">
+            <button type="button" id="openAllMessagesBtn" class="btn-view-all-notes">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+              </svg>
+              <span>Ver Todos os Recados (<strong id="totalMessagesBadge">0</strong>)</span>
+            </button>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -589,6 +563,32 @@
           <span>Confirmar e Avisar no WhatsApp</span>
         </button>
       </form>
+    </div>
+  </div>
+
+
+  <!-- ================================================================
+       MODAL 3: MURAL COMPLETO DE RECADOS (POP-UP LIVRO DE OURO)
+       ================================================================ -->
+  <div class="modal-overlay" id="allMessagesModal" role="dialog" aria-modal="true" aria-labelledby="allMessagesModalTitle">
+    <div class="modal-card modal-mural-card">
+      <button type="button" class="modal-close-btn" data-close-modal aria-label="Fechar mural">&times;</button>
+      
+      <div class="modal-mural-header">
+        <span class="mural-badge-tag">💌 Livro de Ouro da Millena</span>
+        <h3 class="modal-title" id="allMessagesModalTitle">Todos os Recados & Votos de Carinho</h3>
+        <p class="modal-desc">Todas as homenagens e votos deixados pelos amigos e família:</p>
+      </div>
+
+      <!-- Barra de Busca Rápida no Mural -->
+      <div class="mural-search-container">
+        <input type="text" id="muralSearchInput" class="mural-search-input" placeholder="🔍 Buscar por nome ou palavra no recado...">
+      </div>
+
+      <!-- Feed Rolável de Recados em Papel -->
+      <div class="modal-mural-feed" id="modalMuralFeed">
+        <!-- Renderizado dinamicamente via animations.js -->
+      </div>
     </div>
   </div>
 

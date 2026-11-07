@@ -1165,23 +1165,32 @@ body.modal-open {
 }
 
 .card-image-wrap {
-  width: 120px;
-  height: 120px;
-  margin: 0.5rem auto 1.2rem;
+  width: 100%;
+  height: 190px;
+  margin: 0 auto 1.2rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.25s ease;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: #FFFDF9;
+  border: 1px solid rgba(200, 75, 28, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.8);
 }
 
 .gift-card:hover .card-image-wrap {
-  transform: scale(1.06);
+  border-color: var(--terracotta);
 }
 
 .card-image {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.gift-card:hover .card-image {
+  transform: scale(1.06);
 }
 
 .card-content {
@@ -1270,104 +1279,440 @@ body.modal-open {
 }
 
 /* ====================================================================
- * SEÇÃO: MURAL INTERATIVO DE RECADOS
+ * SEÇÃO: MURAL INTERATIVO DE RECADOS (ESTILO PAPEL & CALIGRAFIA)
  * ==================================================================== */
 .guestbook-section {
-  padding: 4rem 1rem 5rem;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  padding: 5rem clamp(1rem, 4vw, 3.5rem) 6rem;
+  background: radial-gradient(ellipse at center, rgba(247, 230, 210, 0.5) 0%, rgba(253, 243, 231, 0.25) 70%, transparent 100%);
+  box-sizing: border-box;
+  overflow-x: clip;
 }
 
-.guestbook-card {
-  background: var(--bg-card);
-  border: 1.5px solid rgba(200, 75, 28, 0.2);
-  border-radius: var(--radius-lg);
-  padding: 3rem 2.5rem;
-  max-width: 860px;
-  margin: 0 auto;
-  box-shadow: var(--shadow-md);
+.guestbook-paper-desk {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3.5rem;
+}
+
+/* 1. Formulário em Bloco de Notas de Papel */
+.guestbook-form-paper {
+  position: relative;
+  width: 100%;
+  max-width: 820px;
+  background: #FFFDF8;
+  background-image: repeating-linear-gradient(transparent, transparent 31px, rgba(92, 34, 14, 0.04) 31px, rgba(92, 34, 14, 0.04) 32px);
+  border: 1px solid rgba(200, 75, 28, 0.2);
+  border-radius: 6px;
+  padding: 3rem clamp(1.5rem, 5vw, 3rem) 2.5rem;
+  box-shadow: 0 14px 40px rgba(92, 34, 14, 0.08), 0 3px 10px rgba(0, 0, 0, 0.04);
+}
+
+.paper-washi-tape {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 28px;
+  background: rgba(229, 169, 60, 0.45);
+  backdrop-filter: blur(2px);
+  border-left: 2px dashed rgba(255, 255, 255, 0.7);
+  border-right: 2px dashed rgba(255, 255, 255, 0.7);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .guestbook-header {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.paper-header-tag {
+  font-family: var(--font-cursive);
+  font-size: 1.6rem;
+  color: var(--terracotta);
+  display: block;
+  margin-bottom: 0.2rem;
 }
 
 .guestbook-header h2 {
   font-family: var(--font-heading);
-  font-size: clamp(2rem, 4vw, 2.6rem);
+  font-size: clamp(2rem, 4vw, 2.7rem);
   font-weight: 800;
   color: var(--coffee-dark);
+}
+
+.paper-subtitle {
+  color: var(--coffee-light);
+  font-size: 1rem;
+  margin-top: 0.35rem;
 }
 
 .guestbook-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 2.5rem;
-}
-
-.form-row {
-  display: flex;
-  gap: 1rem;
-}
-
-.form-input {
-  width: 100%;
-  padding: 0.9rem 1.1rem;
-  border-radius: var(--radius-sm);
-  border: 1.5px solid rgba(92, 34, 14, 0.2);
-  font-family: var(--font-main);
-  font-size: 0.95rem;
-  background: var(--white);
-  color: var(--coffee);
-  outline: none;
-  transition: border-color 0.2s ease;
-}
-
-.form-input:focus {
-  border-color: var(--terracotta);
-}
-
-.guestbook-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.2rem;
 }
 
-.guest-note-card {
-  background: #FFFDF9;
-  border: 1px solid rgba(229, 169, 60, 0.3);
+.paper-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1.5px solid rgba(92, 34, 14, 0.2);
   border-radius: var(--radius-sm);
-  padding: 1.4rem;
-  box-shadow: var(--shadow-sm);
+  padding: 0.9rem 1.2rem;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  color: var(--coffee-dark);
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.paper-input:focus {
+  border-color: var(--terracotta);
+  background: #FFFFFF;
+}
+
+.paper-textarea {
+  width: 100%;
+  background: #FFFFFF;
+  background-image: repeating-linear-gradient(transparent, transparent 31px, rgba(92, 34, 14, 0.07) 31px, rgba(92, 34, 14, 0.07) 32px);
+  border: 1.5px solid rgba(92, 34, 14, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1.2rem;
+  font-family: 'Caveat', cursive;
+  font-size: 1.65rem;
+  line-height: 32px;
+  color: #2C1810;
+  outline: none;
+  resize: vertical;
+  min-height: 130px;
+  transition: border-color 0.2s ease;
+}
+
+.paper-textarea:focus {
+  border-color: var(--terracotta);
+}
+
+.form-submit-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.btn-submit-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--terracotta);
+  color: var(--white);
+  padding: 0.95rem 2.2rem;
+  border: none;
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  box-shadow: 0 6px 18px var(--terracotta-glow);
+  transition: var(--transition-smooth);
+}
+
+.btn-submit-note:hover {
+  background: var(--terracotta-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--terracotta-glow);
+}
+
+/* 2. Feed em Formato de Cards em Papel (Expansão Ampla na Tela) */
+.guestbook-feed-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.2rem;
+}
+
+.guestbook-feed-title {
+  text-align: center;
+}
+
+.guestbook-feed-title span {
+  font-family: var(--font-cursive);
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--coffee-dark);
   position: relative;
+  display: inline-block;
+}
+
+.guestbook-feed-title span::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: var(--terracotta);
+  margin: 0.25rem auto 0;
+  border-radius: var(--radius-full);
+}
+
+/* Grade de Cards na Página Principal (Desktop: Cards / Celular: Lista) */
+.guestbook-cards-grid,
+.guestbook-vertical-feed {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 2.2rem 1.8rem;
+  justify-content: center;
+  align-items: stretch;
+}
+
+/* Cartão de Recado com Estilo de Papel & Caligrafia */
+.guest-note-paper {
+  width: 100%;
+  min-height: 220px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background: #FFFDF8;
+  background-image: repeating-linear-gradient(transparent, transparent 31px, rgba(92, 34, 14, 0.05) 31px, rgba(92, 34, 14, 0.05) 32px);
+  border: 1px solid rgba(229, 169, 60, 0.35);
+  border-radius: 4px;
+  padding: 2.4rem 1.8rem 1.5rem;
+  box-shadow: 0 8px 24px rgba(92, 34, 14, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03);
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.note-pin {
+/* Rotação orgânica alternada estilo post-it / bilhete afixado */
+.guest-note-paper:nth-child(4n + 1) {
+  transform: rotate(-1.2deg);
+}
+
+.guest-note-paper:nth-child(4n + 2) {
+  transform: rotate(1.4deg);
+}
+
+.guest-note-paper:nth-child(4n + 3) {
+  transform: rotate(-0.9deg);
+}
+
+.guest-note-paper:nth-child(4n + 4) {
+  transform: rotate(1.1deg);
+}
+
+.guest-note-paper:hover {
+  transform: rotate(0deg) scale(1.025);
+  box-shadow: 0 16px 36px rgba(92, 34, 14, 0.14);
+  z-index: 5;
+}
+
+/* Tachinha Metálica Dourada 3D Realista (Acabamento Ouro Polido) */
+.note-real-pin {
   position: absolute;
-  top: -8px;
-  right: 12px;
-  font-size: 1.2rem;
+  top: -10px;
+  right: 24px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #FFFCEB 0%, #F5D38A 25%, #E5A93C 55%, #B87B14 80%, #5E3906 100%);
+  box-shadow: 
+    0 4px 8px rgba(74, 26, 10, 0.32),
+    0 1px 3px rgba(0, 0, 0, 0.22),
+    inset 0 1px 1px rgba(255, 255, 255, 0.9),
+    inset 0 -1.5px 2px rgba(70, 35, 8, 0.7);
+  border: 1px solid rgba(138, 86, 18, 0.45);
+  z-index: 5;
+  pointer-events: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.note-text {
-  font-family: var(--font-cursive);
-  font-size: 1.35rem;
-  color: var(--coffee-dark);
-  line-height: 1.3;
-  margin-bottom: 1rem;
+/* Núcleo chanfrado com relevo metálico */
+.note-real-pin::after {
+  content: "";
+  position: absolute;
+  top: 3.5px;
+  left: 3.5px;
+  right: 3.5px;
+  bottom: 3.5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, rgba(255, 255, 255, 0.85) 0%, rgba(245, 211, 138, 0.4) 40%, rgba(110, 55, 10, 0.5) 100%);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
 }
 
-.note-footer {
+.guest-note-paper:hover .note-real-pin {
+  transform: translateY(-2px) scale(1.1);
+  box-shadow: 
+    0 7px 14px rgba(74, 26, 10, 0.38),
+    0 2px 4px rgba(0, 0, 0, 0.25),
+    inset 0 1px 1px rgba(255, 255, 255, 0.95);
+}
+
+/* Texto Manuscrito */
+.note-handwriting {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(1.45rem, 2vw, 1.75rem);
+  line-height: 32px;
+  color: #351C12;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+  word-break: break-word;
+}
+
+.note-paper-footer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  border-top: 1px dashed rgba(92, 34, 14, 0.2);
+  padding-top: 0.75rem;
+  margin-top: auto;
+}
+
+.note-author-hand {
+  font-family: 'Caveat', cursive;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--terracotta);
+}
+
+.note-date-hand {
+  font-family: var(--font-main);
   font-size: 0.8rem;
+  font-weight: 600;
   color: var(--coffee-light);
-  border-top: 1px dashed rgba(92, 34, 14, 0.15);
-  padding-top: 0.5rem;
+  opacity: 0.85;
+}
+
+/* 3. Botão "Ver Todos os Recados" */
+.guestbook-view-all-wrap {
+  margin-top: 1.5rem;
+}
+
+.btn-view-all-notes {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, var(--coffee-dark) 0%, var(--terracotta) 100%);
+  color: var(--white);
+  padding: 1.15rem 2.6rem;
+  border: none;
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.15rem;
+  cursor: pointer;
+  box-shadow: 0 8px 26px rgba(92, 34, 14, 0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.btn-view-all-notes:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 34px rgba(200, 75, 28, 0.35);
+}
+
+.btn-view-all-notes strong {
+  background: rgba(255, 255, 255, 0.25);
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-full);
+  font-size: 0.95rem;
+}
+
+/* 4. Modal / Pop-up Amplo no PC e em Cards */
+.modal-mural-card {
+  max-width: 1200px; /* Amplo no PC */
+  width: 95vw;
+  max-height: 90vh;
+  height: 86vh;
+  display: flex;
+  flex-direction: column;
+  padding: 2.5rem clamp(1.4rem, 3vw, 3rem);
+  background: #FFFDF9;
+  border: 2px solid var(--terracotta);
+}
+
+.modal-mural-header {
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+
+.mural-badge-tag {
+  font-family: var(--font-cursive);
+  font-size: 1.5rem;
+  color: var(--terracotta);
+  display: block;
+}
+
+.mural-search-container {
+  margin-bottom: 1.2rem;
+  width: 100%;
+}
+
+.mural-search-input {
+  width: 100%;
+  padding: 0.85rem 1.3rem;
+  border: 1.5px solid rgba(92, 34, 14, 0.2);
+  border-radius: var(--radius-full);
+  font-family: var(--font-main);
+  font-size: 0.95rem;
+  background: #FFFFFF;
+  color: var(--coffee-dark);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mural-search-input:focus {
+  border-color: var(--terracotta);
+  box-shadow: 0 0 0 3px rgba(200, 75, 28, 0.12);
+}
+
+/* Grid de cards dentro do modal no PC */
+.modal-mural-feed {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.2rem 0.8rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.8rem;
+  align-content: start;
+}
+
+.empty-mural-msg {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-family: var(--font-cursive);
+  font-size: 1.6rem;
+  color: var(--coffee-light);
+  padding: 2.5rem 1rem;
+}
+
+/* Responsividade Mobile: cards viram lista vertical no celular */
+@media (max-width: 680px) {
+  .guestbook-cards-grid,
+  .guestbook-vertical-feed {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .modal-mural-card {
+    height: 92vh;
+    max-height: 92vh;
+    padding: 1.8rem 1.2rem;
+  }
+
+  .modal-mural-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 1.3rem;
+  }
 }
 
 /* ====================================================================

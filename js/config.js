@@ -30,16 +30,16 @@ const SITE_CONFIG = {
 
   // Dados para Pagamento e Confirmação via PIX (100% Gratuito - Padrão Banco Central EMVCo)
   pix: {
-    chave: "millena40anos@pix.com.br",
-    nomeTitular: "MILLENA SILVA",
-    cidadeTitular: "SAO PAULO",
+    chave: "+5585981311975",
+    nomeTitular: "JEFERSON BORGES TAVEIRA",
+    cidadeTitular: "FORTALEZA",
     txIdPadrao: "NIVER40"
   },
 
   // Contato de WhatsApp da Aniversariante para receber recados e comprovantes
   whatsapp: {
-    numero: "5511999998888",
-    mensagemPadraoPix: (nomePresente, valor) => 
+    numero: "5585981311975",
+    mensagemPadraoPix: (nomePresente, valor) =>
       `Oi Millena! 🎉 Acabei de presentear você com "${nomePresente}" no valor de R$ ${valor.toFixed(2).replace('.', ',')} via PIX para comemorar seus 40 anos! Segue o comprovante em anexo. Que seu novo ciclo seja radiante e repleto de bênçãos! ❤️✨`,
     mensagemPadraoFisico: (nomePresente, nomeConvidado, recado) =>
       `Oi Millena! 🎁 Escolhi te levar de presente o item "${nomePresente}" para a sua festa de 40 anos! ${recado ? `"${recado}"` : ''} Com carinho, ${nomeConvidado || 'Seu Convidado'}. Mal posso esperar pela Feijoada e pelo Pagode! 🥁✨`
@@ -48,14 +48,16 @@ const SITE_CONFIG = {
   // Categorias da Lista de Presentes
   categorias: [
     { id: "todas", label: "Todos os Presentes" },
-    { id: "drinks", label: "Brindes & Chopp 🥂" },
-    { id: "experiencias", label: "Experiências & Bem-Estar 💆‍♀️" },
+    { id: "fitness", label: "Fitness & Treino 🏋️‍♀️" },
+    { id: "perfumes", label: "Perfumes & Beleza 🌸" },
+    { id: "acessorios", label: "Acessórios & Semijoias ✨" },
     { id: "casa", label: "Casa & Estilo 🏡" },
     { id: "cotas", label: "Cotas Livres & Mimos 💖" }
   ],
 
-  // Catálogo Completo e Recheado de Presentes
+  // Catálogo Completo e Personalizado de Presentes da Millena
   presentes: [
+    // --- COTAS & MIMOS ---
     {
       id: "cota-livre",
       titulo: "Mimo do Coração (Cota Livre)",
@@ -63,117 +65,153 @@ const SITE_CONFIG = {
       valor: 0,
       isLivre: true,
       destaque: true,
-      imagem: "assets/images/gifts/cota_livre.svg",
-      descricao: "Você escolhe o valor que cabe no seu bolso com todo o carinho para celebrar essa data tão especial!",
-      dicaFisico: "Qualquer valor e carinho faz a aniversariante sorrir à toa!"
+      imagem: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80",
+      descricao: "Você escolhe com todo o amor o valor que deseja presentear para celebrar os 40 anos da Millena!",
+      dicaFisico: "Qualquer mimo ou carinho faz a aniversariante sorrir à toa!"
+    },
+
+    // --- FITNESS & SUPLEMENTOS ---
+    {
+      id: "whey-protein",
+      titulo: "Whey Protein Isolado / Concentrado",
+      categoria: "fitness",
+      valor: 160.00,
+      imagem: "https://images.unsplash.com/photo-1593095948071-474c5cc2989d?auto=format&fit=crop&w=800&q=80",
+      descricao: "Proteína de alto valor biológico para auxiliar na recuperação muscular, energia e rotina de treinos.",
+      dicaFisico: "Pote de Whey Protein (sabor Baunilha, Chocolate ou Cookies preferido)."
     },
     {
-      id: "rodada-chopp",
-      titulo: "Rodada de Chopp Geladinho",
-      categoria: "drinks",
-      valor: 45.00,
-      imagem: "assets/images/gifts/cerveja.svg",
-      descricao: "Um chopp bem gelado com colarinho cremoso para brindar a alegria de estarmos juntos!",
-      dicaFisico: "Para brindar muito durante o pagode!"
+      id: "creatina-pura",
+      titulo: "Creatina Monohidratada 100% Pura",
+      categoria: "fitness",
+      valor: 95.00,
+      imagem: "https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?auto=format&fit=crop&w=800&q=80",
+      descricao: "Creatina pura de máxima absorção para força, resistência muscular e excelente desempenho diário.",
+      dicaFisico: "Pote de Creatina Monohidratada Creapure ou 100% pura 250g/300g."
     },
     {
-      id: "balde-cerveja",
-      titulo: "Balde de Cerveja Artesanal",
-      categoria: "drinks",
-      valor: 75.00,
-      imagem: "assets/images/gifts/cerveja.svg",
-      descricao: "Cervejinhas selecionadas no gelo para abastecer a mesa e curtir o samba com energia.",
-      dicaFisico: "Cervejas IPA, Puro Malte ou artesanais favoritas da aniversariante."
-    },
-    {
-      id: "taca-gin",
-      titulo: "Gin Tônica com Especiarias",
-      categoria: "drinks",
-      valor: 85.00,
-      imagem: "assets/images/gifts/gin.svg",
-      descricao: "Um drink sofisticado, refrescante com botânicos e zests cítricos para comemorar os 40.",
-      dicaFisico: "Taça personalizada ou garrafa de Gin especial."
-    },
-    {
-      id: "espumante-comemoracao",
-      titulo: "Garrafa de Espumante para o Brinde",
-      categoria: "drinks",
-      valor: 130.00,
-      imagem: "assets/images/gifts/espumante.svg",
-      descricao: "Muitas borbulhas na taça para o grande momento dos parabéns e fotos inesquecíveis!",
-      dicaFisico: "Espumante Brut ou Moscatel para o brinde oficial."
-    },
-    {
-      id: "spa-relax",
-      titulo: "Dia de Spa & Massagem Relaxante",
-      categoria: "experiencias",
+      id: "conjunto-fitness",
+      titulo: "Conjunto Fitness (Legging & Top)",
+      categoria: "fitness",
       valor: 180.00,
-      imagem: "assets/images/gifts/spa.svg",
-      descricao: "Um momento de puro autocuidado, massagem e renovação para iniciar os 40 revigorada.",
-      dicaFisico: "Voucher de Spa ou kit com óleos essenciais e toalhas nobres."
+      imagem: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=800&q=80",
+      descricao: "Conjunto moderno com tecido de compressão confortável, toque aveludado e caimento perfeito para treinar.",
+      dicaFisico: "Conjunto de legging e top esportivo (tamanho M ou cores neutras/terrosas)."
     },
     {
-      id: "salao-beleza",
-      titulo: "Produção Especial de Beleza",
-      categoria: "experiencias",
-      valor: 150.00,
-      imagem: "assets/images/gifts/beleza.svg",
-      descricao: "Cabelo, unhas e make profissional para se sentir ainda mais linda e empoderada.",
-      dicaFisico: "Voucher do salão de beleza preferido."
+      id: "tenis-treino",
+      titulo: "Tênis Esportivo para Academia",
+      categoria: "fitness",
+      valor: 290.00,
+      imagem: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
+      descricao: "Amortecimento ideal, leveza e estabilidade para corridas, caminhadas e treinos funcionais.",
+      dicaFisico: "Tênis esportivo feminino confortável."
+    },
+
+    // --- PERFUMES & BELEZA ---
+    {
+      id: "perfume-eternal-cherish",
+      titulo: "Perfume Eternal Cherish (WePink)",
+      categoria: "perfumes",
+      valor: 189.00,
+      destaque: true,
+      imagem: "https://wepink.vtexassets.com/arquivos/ids/164417/WhatsApp-Image-2026-05-16-at-07.51.21--1-.webp",
+      descricao: "O perfume queridinho da aniversariante! Floral oriental ambarado com notas marcantes de canela, baunilha e jasmim.",
+      dicaFisico: "Desodorante Colônia Eternal Cherish WePink 100ml."
     },
     {
-      id: "jantar-comemorativo",
-      titulo: "Jantar Romântico / Gastronômico",
-      categoria: "experiencias",
+      id: "perfume-importado",
+      titulo: "Perfume Importado Sofisticado",
+      categoria: "perfumes",
+      valor: 340.00,
+      imagem: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=800&q=80",
+      descricao: "Fragrância floral marcante e luxuosa, com alta fixação e elegância para ocasiões especiais.",
+      dicaFisico: "Perfume Eau de Parfum importado feminino favorito da Millena."
+    },
+    {
+      id: "kit-skincare",
+      titulo: "Kit Skincare Facial Hidratação & Glow",
+      categoria: "perfumes",
+      valor: 140.00,
+      imagem: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80",
+      descricao: "Cuidados especiais com a pele: sérum antioxidante, ácido hialurônico e hidratação profunda.",
+      dicaFisico: "Kit de cuidados faciais e dermocosméticos hidratantes."
+    },
+
+    // --- ACESSÓRIOS & SEMIJOIAS ---
+    {
+      id: "oculos-sol",
+      titulo: "Óculos de Sol Elegante",
+      categoria: "acessorios",
       valor: 220.00,
-      imagem: "assets/images/gifts/jantar.svg",
-      descricao: "Uma noite especial em um restaurante delicioso com pratos incríveis e bom vinho.",
-      dicaFisico: "Convite para jantar especial."
+      imagem: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80",
+      descricao: "Design sofisticado com lentes de proteção UV400, acabamento refinado para arrasar nos dias de sol.",
+      dicaFisico: "Óculos de sol feminino modelo tartaruga clássico ou armação dourada."
+    },
+    {
+      id: "colar-ponto-luz",
+      titulo: "Colar Ponto de Luz em Zircônia",
+      categoria: "acessorios",
+      valor: 165.00,
+      imagem: "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=800&q=80",
+      descricao: "Gargantilha delicada com banho dourado e pingente solitário de zircônia que ilumina o colo com leveza.",
+      dicaFisico: "Semijoia dourada antialérgica com design minimalista."
+    },
+    {
+      id: "pulseira-dourada",
+      titulo: "Pulseira Feminina Dourada Riviera",
+      categoria: "acessorios",
+      valor: 145.00,
+      imagem: "https://images.unsplash.com/photo-1611591475152-477d6928e4e9?auto=format&fit=crop&w=800&q=80",
+      descricao: "Pulseira com elos refinados e brilho sutil para compor mixes elegantes de pulseiras no dia a dia.",
+      dicaFisico: "Pulseira com banho em ouro 18k e fecho seguro."
+    },
+    {
+      id: "bracelete-rigido",
+      titulo: "Bracelete Rígido Dourado Minimalista",
+      categoria: "acessorios",
+      valor: 175.00,
+      imagem: "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&w=800&q=80",
+      descricao: "Bracelete anatômico moderno em acabamento dourado polido, trazendo poder e sofisticação aos pulsos.",
+      dicaFisico: "Bracelete rígido anatômico dourado com acabamento liso."
+    },
+
+    // --- ITENS DE CASA ---
+    {
+      id: "air-fryer",
+      titulo: "Fritadeira Elétrica Air Fryer",
+      categoria: "casa",
+      valor: 350.00,
+      imagem: "https://images.unsplash.com/photo-1585672840545-ef9a65c6f663?auto=format&fit=crop&w=800&q=80",
+      descricao: "Praticidade total no dia a dia: receitas crocantes e saudáveis sem usar óleo e com limpeza rápida.",
+      dicaFisico: "Fritadeira sem óleo Air Fryer digital (voltagem 220V)."
+    },
+    {
+      id: "cafeteira-espresso",
+      titulo: "Cafeteira de Cápsulas / Espresso",
+      categoria: "casa",
+      valor: 390.00,
+      imagem: "https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?auto=format&fit=crop&w=800&q=80",
+      descricao: "Cafés aromáticos, cremosos e encorpados com a praticidade de um clique para começar o dia bem.",
+      dicaFisico: "Cafeteira Nespresso Essenza Mini ou Dolce Gusto (220V)."
+    },
+    {
+      id: "tacas-cristal",
+      titulo: "Jogo de Taças de Cristal Nobre",
+      categoria: "casa",
+      valor: 160.00,
+      imagem: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80",
+      descricao: "Conjunto de taças com transparência límpida e lapidação fina para receber a família e brindar a vida.",
+      dicaFisico: "Jogo com 6 taças de cristal para vinho ou espumante."
     },
     {
       id: "difusor-aromas",
-      titulo: "Difusor de Aromas & Óleos Nobres",
+      titulo: "Difusor de Aromas Ultrassônico & LED",
       categoria: "casa",
-      valor: 95.00,
-      imagem: "assets/images/gifts/difusor.svg",
-      descricao: "Para deixar o cantinho da casa perfumado com notas de lavanda, baunilha e aconchego.",
-      dicaFisico: "Aromatizador com varetas nobres ou difusor elétrico."
-    },
-    {
-      id: "vela-artesanal",
-      titulo: "Kit de Velas Aromáticas & Bandeja",
-      categoria: "casa",
-      valor: 110.00,
-      imagem: "assets/images/gifts/vela.svg",
-      descricao: "Velas de cera vegetal vegetal que iluminam o ambiente e trazem calma e paz.",
-      dicaFisico: "Velas aromáticas com aromas de capim-limão ou flor de laranjeira."
-    },
-    {
-      id: "acessorio-elegante",
-      titulo: "Semijoia Delicada & Charmosa",
-      categoria: "casa",
-      valor: 140.00,
-      imagem: "assets/images/gifts/joia.svg",
-      descricao: "Um colar, brinco ou pulseira com banho dourado para marcar essa data especial.",
-      dicaFisico: "Semijoia dourada antialérgica com design atemporal."
-    },
-    {
-      id: "cota-viagem",
-      titulo: "Cota para a Viagem dos Sonhos",
-      categoria: "cotas",
-      valor: 250.00,
-      imagem: "assets/images/gifts/viagem.svg",
-      descricao: "Uma contribuição para colecionar carimbos no passaporte e viver momentos únicos!",
-      dicaFisico: "Cota para apoiar novas aventuras pelo mundo."
-    },
-    {
-      id: "cota-pagode",
-      titulo: "Cota do Pagode & Pandeiro",
-      categoria: "cotas",
-      valor: 60.00,
-      imagem: "assets/images/gifts/pagode.svg",
-      descricao: "Para garantir que o cavaquinho e o tantan continuem tocando os maiores sucessos!",
-      dicaFisico: "Para ajudar a manter o samba e a alegria da festa!"
+      valor: 120.00,
+      imagem: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80",
+      descricao: "Umidifica o ambiente e espalha óleos essenciais relaxantes com iluminação suave para aconchego total.",
+      dicaFisico: "Difusor e umidificador ultrassônico acompanhado de óleo essencial."
     }
   ]
 };

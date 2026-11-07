@@ -74,8 +74,14 @@ class PixEngine {
   static generatePayload({ chave, nome, cidade, valor, txId, descricao }) {
     if (!chave) throw new Error("Chave PIX obrigatória.");
 
+    // Normalização da chave PIX: se for telefone celular brasileiro (com 55 no início), garante o prefixo internacional "+"
+    let cleanChave = chave.trim();
+    if (/^55\d{10,11}$/.test(cleanChave)) {
+      cleanChave = `+${cleanChave}`;
+    }
+
     const cleanNome = this.sanitizeText(nome || "MILLENA").substring(0, 25).toUpperCase();
-    const cleanCidade = this.sanitizeText(cidade || "SAO PAULO").substring(0, 15).toUpperCase();
+    const cleanCidade = this.sanitizeText(cidade || "FORTALEZA").substring(0, 15).toUpperCase();
     const cleanTxId = this.sanitizeText(txId || "***").replace(/\s/g, "").substring(0, 25) || "***";
 
     // 00: Payload Format Indicator
@@ -83,7 +89,7 @@ class PixEngine {
 
     // 26: Merchant Account Information
     let merchantAccount = this.formatTLV("00", "br.gov.bcb.pix");
-    merchantAccount += this.formatTLV("01", chave.trim());
+    merchantAccount += this.formatTLV("01", cleanChave);
     if (descricao) {
       const cleanDesc = this.sanitizeText(descricao).substring(0, 40);
       if (cleanDesc) {

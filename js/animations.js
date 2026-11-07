@@ -512,62 +512,159 @@ class SiteAnimations {
   }
 
   /* ------------------------------------------------------------------
-   * 8. MURAL INTERATIVO DE RECADOS & FELICITAÇÕES
+   * 8. MURAL INTERATIVO DE RECADOS & FELICITAÇÕES (PAPEL & CALIGRAFIA)
    * ------------------------------------------------------------------ */
   initGuestBook() {
     const form = document.getElementById("guestBookForm");
-    const grid = document.getElementById("guestBookGrid");
-    if (!form || !grid) return;
+    const feed = document.getElementById("guestBookFeed");
+    const modal = document.getElementById("allMessagesModal");
+    const modalFeed = document.getElementById("modalMuralFeed");
+    const openAllBtn = document.getElementById("openAllMessagesBtn");
+    const totalBadge = document.getElementById("totalMessagesBadge");
+    const searchInput = document.getElementById("muralSearchInput");
+
+    if (!form || !feed) return;
+
+    // Limite de bilhetes exibidos em formato de cards na página principal
+    const MAX_VISIBLE_FEED = 6;
 
     // Recados padrão iniciais de carinho
     const defaultMessages = [
       {
         nome: "Mariana & Família",
-        texto: "Millena querida, 40 anos com essa energia maravilhosa e esse sorriso iluminado! Que esse novo ciclo venha com saúde e muito pagode!",
+        texto: "Millena querida, 40 anos com essa energia maravilhosa e esse sorriso iluminado! Que esse novo ciclo venha com saúde, paz e muito pagode!",
         data: "Hoje"
       },
       {
         nome: "Renato & Paulinha",
-        texto: "Já estamos na contagem regressiva para essa feijoada incrível! Parabéns por essa trajetória tão linda e inspiradora!",
+        texto: "Já estamos na contagem regressiva para essa feijoada incrível! Parabéns por essa trajetória tão linda e inspiradora, amiga!",
         data: "Ontem"
       },
       {
         nome: "Tia Lúcia",
         texto: "Minha sobrinha linda, de repente 40! Deus te abençoe abundantemente. Mal posso esperar pelo abraço no dia 03/04!",
         data: "2 dias atrás"
+      },
+      {
+        nome: "Doutor André & Bia",
+        texto: "Parabéns pelos 40 anos, Millena! Que seja um dia inesquecível de celebração, música boa e rodeada de quem te quer bem!",
+        data: "3 dias atrás"
       }
     ];
 
     const getStoredMessages = () => {
       try {
         const stored = localStorage.getItem("dr40_guest_book");
-        return stored ? JSON.parse(stored) : defaultMessages;
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          // Remove recados de teste antigos ("Você é linda demais")
+          const filtered = parsed.filter((m) => {
+            const txt = (m.texto || "").toLowerCase();
+            return !txt.includes("linda demais");
+          });
+          if (filtered.length !== parsed.length) {
+            localStorage.setItem("dr40_guest_book", JSON.stringify(filtered));
+          }
+          return filtered;
+        }
+        return defaultMessages;
       } catch (e) {
         return defaultMessages;
       }
     };
 
-    const renderMessages = () => {
-      const messages = getStoredMessages();
-      grid.innerHTML = "";
+    const createNoteElement = (msg) => {
+      const card = document.createElement("div");
+      card.className = "guest-note-paper";
+      card.innerHTML = `
+        <div class="note-real-pin" aria-hidden="true"></div>
+        <p class="note-handwriting">"${msg.texto}"</p>
+        <div class="note-paper-footer">
+          <span class="note-author-hand">— ${msg.nome}</span>
+          <span class="note-date-hand">${msg.data}</span>
+        </div>
+      `;
+      return card;
+    };
 
-      messages.forEach((msg) => {
-        const card = document.createElement("div");
-        card.className = "guest-note-card";
-        card.innerHTML = `
-          <div class="note-pin">📌</div>
-          <p class="note-text">"${msg.texto}"</p>
-          <div class="note-footer">
-            <strong class="note-author">${msg.nome}</strong>
-            <span class="note-time">${msg.data}</span>
-          </div>
-        `;
-        grid.appendChild(card);
+    const renderMessages = (filter = "") => {
+      const messages = getStoredMessages();
+
+      // 1. Atualiza o contador de mensagens no botão
+      if (totalBadge) {
+        totalBadge.textContent = messages.length;
+      }
+
+      // 2. Renderiza os bilhetes no feed vertical da página principal (limitado a MAX_VISIBLE_FEED)
+      feed.innerHTML = "";
+      const visibleList = messages.slice(0, MAX_VISIBLE_FEED);
+      visibleList.forEach((msg) => {
+        feed.appendChild(createNoteElement(msg));
       });
+
+      // 3. Renderiza a lista completa no modal / pop-up (com suporte a busca)
+      if (modalFeed) {
+        modalFeed.innerHTML = "";
+        const filtered = messages.filter((msg) => {
+          if (!filter) return true;
+          const search = filter.toLowerCase();
+          return (
+            (msg.nome && msg.nome.toLowerCase().includes(search)) ||
+            (msg.texto && msg.texto.toLowerCase().includes(search))
+          );
+        });
+
+        if (filtered.length === 0) {
+          modalFeed.innerHTML = `<p class="empty-mural-msg">Nenhum recadinho encontrado com esse termo... 💌</p>`;
+        } else {
+          filtered.forEach((msg) => {
+            modalFeed.appendChild(createNoteElement(msg));
+          });
+        }
+      }
     };
 
     renderMessages();
 
+    // Controle de abertura da Pop-up / Modal com todas as mensagens
+    if (openAllBtn && modal) {
+      openAllBtn.addEventListener("click", () => {
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+        if (searchInput) searchInput.value = "";
+        renderMessages();
+      });
+    }
+
+    // Fechamento da Pop-up ao clicar no botão de fechar ou no backdrop
+    if (modal) {
+      const closeBtns = modal.querySelectorAll("[data-close-modal]");
+      const closeModal = () => {
+        modal.classList.remove("active");
+        document.body.style.overflow = "";
+      };
+
+      closeBtns.forEach((btn) => btn.addEventListener("click", closeModal));
+
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modal.classList.contains("active")) {
+          closeModal();
+        }
+      });
+    }
+
+    // Busca instantânea em tempo real dentro da Pop-up
+    if (searchInput) {
+      searchInput.addEventListener("input", (e) => {
+        renderMessages(e.target.value.trim());
+      });
+    }
+
+    // Envio de novo recadinho no mural
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       const nameInput = document.getElementById("gbAuthor");
@@ -596,10 +693,13 @@ class SiteAnimations {
 
       const toast = document.getElementById("toastNotification");
       if (toast) {
-        toast.textContent = "Seu recado foi publicado no mural! 💖";
+        toast.textContent = "Seu recado foi preso no mural com todo carinho! 💌✨";
         toast.classList.add("show");
         setTimeout(() => toast.classList.remove("show"), 3500);
       }
+
+      // Rola suavemente até o feed de mensagens para ver o bilhete recém-colado
+      feed.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
   }
 
