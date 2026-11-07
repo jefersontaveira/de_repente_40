@@ -67,6 +67,12 @@ class GiftManager {
       copyPixBtn.addEventListener("click", () => this.handleCopyPix());
     }
 
+    // Botão Confirmar PIX Realizado (grava na Planilha sem WhatsApp)
+    const confirmPixBtn = document.getElementById("confirmPixDoneBtn");
+    if (confirmPixBtn) {
+      confirmPixBtn.addEventListener("click", () => this.handlePixConfirmation());
+    }
+
     // Formulário do Presente Físico
     const physicalForm = document.getElementById("physicalForm");
     if (physicalForm) {
@@ -217,12 +223,68 @@ class GiftManager {
       this.updatePixQRCode(gift.valor);
     }
 
-    // Configura o link do WhatsApp para envio do comprovante
-    this.updateWhatsAppPixLink(gift.isLivre ? 100 : gift.valor);
+    // Preenche o nome do convidado com o nome memorizado no dispositivo
+    const pixNameInput = document.getElementById("pixGuestName");
+    if (pixNameInput && typeof UserManager !== "undefined") {
+      const savedName = UserManager.getName();
+      if (savedName) pixNameInput.value = savedName;
+    }
 
     if (this.pixModal) {
       this.pixModal.classList.add("active");
       document.body.classList.add("modal-open");
+    }
+  }
+
+  async handlePixConfirmation() {
+    if (!this.selectedGift) return;
+
+    const nameInput = document.getElementById("pixGuestName");
+    const nome = nameInput ? nameInput.value.trim() : "";
+
+    if (!nome) {
+      this.showToast("Por favor, informe seu nome para a Millena saber quem a presenteou! 💖");
+      if (nameInput) nameInput.focus();
+      return;
+    }
+
+    let valor = this.selectedGift.valor;
+    if (this.selectedGift.isLivre) {
+      const customInput = document.getElementById("customPixAmount");
+      valor = customInput ? parseFloat(customInput.value.replace(",", ".")) : 100;
+      if (isNaN(valor) || valor <= 0) valor = 100;
+    }
+
+    const confirmBtn = document.getElementById("confirmPixDoneBtn");
+    const originalText = confirmBtn ? confirmBtn.innerHTML : "";
+    if (confirmBtn) {
+      confirmBtn.disabled = true;
+      confirmBtn.innerHTML = `<span>Registrando na lista da Millena... ⏳</span>`;
+    }
+
+    try {
+      if (typeof SheetsService !== "undefined") {
+        await SheetsService.submitPixGift({
+          name: nome,
+          giftTitle: this.selectedGift.titulo,
+          amount: valor
+        });
+      }
+
+      this.showToast("Presente registrado com sucesso na lista da Millena! Muito obrigado pelo carinho! 💖✨");
+      
+      setTimeout(() => {
+        if (confirmBtn) {
+          confirmBtn.disabled = false;
+          confirmBtn.innerHTML = originalText;
+        }
+        this.closeAllModals();
+      }, 1500);
+
+    } catch (err) {
+      console.error("Erro ao registrar PIX:", err);
+      this.showToast("Presente anotado com carinho! Muito obrigado! 💖");
+      this.closeAllModals();
     }
   }
 
@@ -268,20 +330,9 @@ class GiftManager {
           qrContainer.appendChild(img);
         }
       }
-
-      this.updateWhatsAppPixLink(valor);
     } catch (err) {
       console.error("Erro ao gerar QR Code PIX:", err);
     }
-  }
-
-  updateWhatsAppPixLink(valor) {
-    const btn = document.getElementById("whatsappPixNotifyBtn");
-    if (!btn || !this.selectedGift) return;
-
-    const texto = this.config.whatsapp.mensagemPadraoPix(this.selectedGift.titulo, Number(valor));
-    const url = `https://api.whatsapp.com/send?phone=${this.config.whatsapp.numero}&text=${encodeURIComponent(texto)}`;
-    btn.href = url;
   }
 
   async handleCopyPix() {
@@ -313,10 +364,13 @@ class GiftManager {
     if (titleEl) titleEl.textContent = gift.titulo;
     if (hintEl) hintEl.textContent = gift.dicaFisico || "Leve com muito carinho no dia da comemoração!";
 
-    // Limpa campos anteriores
+    // Preenche campos anteriores com o nome memorizado
     const nameInput = document.getElementById("guestName");
     const msgInput = document.getElementById("guestMessage");
-    if (nameInput) nameInput.value = "";
+    if (nameInput) {
+      const savedName = (typeof UserManager !== "undefined") ? UserManager.getName() : "";
+      nameInput.value = savedName || "";
+    }
     if (msgInput) msgInput.value = "";
 
     if (this.physicalModal) {
@@ -325,7 +379,7 @@ class GiftManager {
     }
   }
 
-  handlePhysicalSubmit(e) {
+  async handlePhysicalSubmit(e) {
     e.preventDefault();
     if (!this.selectedGift) return;
 
@@ -340,6 +394,13 @@ class GiftManager {
       return;
     }
 
+    const submitBtn = document.getElementById("confirmPhysicalBtn");
+    const originalText = submitBtn ? submitBtn.innerHTML : "";
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span>Registrando na planilha... ⏳</span>`;
+    }
+
     // Salva nos itens reservados localmente
     this.reservedGifts[this.selectedGift.id] = {
       nome: nome,
@@ -348,16 +409,33 @@ class GiftManager {
     };
     this.saveReservedGifts();
 
-    // Redireciona para o WhatsApp
-    const texto = this.config.whatsapp.mensagemPadraoFisico(this.selectedGift.titulo, nome, recado);
-    const url = `https://api.whatsapp.com/send?phone=${this.config.whatsapp.numero}&text=${encodeURIComponent(texto)}`;
+    try {
+      // Registra na planilha do Google Sheets (sem redirecionar para o WhatsApp)
+      if (typeof SheetsService !== "undefined") {
+        await SheetsService.submitPhysicalGift({
+          name: nome,
+          giftTitle: this.selectedGift.titulo,
+          message: recado
+        });
+      }
 
-    this.showToast("Presente confirmado! Abrindo WhatsApp... 🎁");
-    setTimeout(() => {
-      window.open(url, "_blank");
+      this.showToast("Presente físico confirmado com sucesso na lista da Millena! 🎁✨");
+      
+      setTimeout(() => {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+        }
+        this.closeAllModals();
+        this.renderGifts();
+      }, 1500);
+
+    } catch (err) {
+      console.error("Erro ao registrar presente físico:", err);
+      this.showToast("Presente físico reservado com carinho! 🎁✨");
       this.closeAllModals();
       this.renderGifts();
-    }, 800);
+    }
   }
 
   closeAllModals() {

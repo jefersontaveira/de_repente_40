@@ -28,6 +28,10 @@ const SITE_CONFIG = {
     rsvpMensagem: "Oi Millena! Confirmo minha presença com muita alegria no seu aniversário de 40 anos no Espaço WM Prime! 🎉✨"
   },
 
+  // URL do Web App do Google Apps Script conectado à Planilha Google Sheets
+  // Cole aqui a URL de Implantação da sua planilha após seguir o passo a passo.
+  sheetsUrl: "",
+
   // Dados para Pagamento e Confirmação via PIX (100% Gratuito - Padrão Banco Central EMVCo)
   pix: {
     chave: "+5585981311975",

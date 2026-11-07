@@ -588,6 +588,13 @@ class SiteAnimations {
 
     if (!form || !feed) return;
 
+    // Preenche com o nome memorizado do convidado
+    const authorInput = document.getElementById("gbAuthor");
+    if (authorInput && typeof UserManager !== "undefined") {
+      const savedName = UserManager.getName();
+      if (savedName && !authorInput.value) authorInput.value = savedName;
+    }
+
     // Limite de bilhetes exibidos em formato de cards na página principal
     const MAX_VISIBLE_FEED = 6;
 
@@ -738,6 +745,16 @@ class SiteAnimations {
       const text = textInput.value.trim();
 
       if (!name || !text) return;
+
+      // Memoriza o nome do usuário para todo o site (RSVP, Presentes, etc.)
+      if (typeof UserManager !== "undefined") {
+        UserManager.setName(name);
+      }
+
+      // Registra também na Planilha Google Sheets em segundo plano
+      if (typeof SheetsService !== "undefined") {
+        SheetsService.submitGuestbookNote({ name, message: text });
+      }
 
       const current = getStoredMessages();
       current.unshift({

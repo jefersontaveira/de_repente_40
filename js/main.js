@@ -16,7 +16,20 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Erro ao carregar presentes:", err);
   }
 
-  // 2. Inicializa as animações, canvas e interações
+  // 2. Inicializa o sistema de RSVP e sincronização de usuário
+  try {
+    if (typeof UserManager !== "undefined") {
+      UserManager.bindInputs();
+    }
+    if (typeof RsvpModalManager !== "undefined") {
+      window.rsvpModalManagerInstance = new RsvpModalManager();
+    }
+    console.log("✅ Sistema RSVP e memória de usuário inicializados.");
+  } catch (err) {
+    console.error("Erro ao inicializar RSVP:", err);
+  }
+
+  // 3. Inicializa as animações, canvas e interações
   try {
     const animations = new SiteAnimations();
     window.siteAnimationsInstance = animations;
@@ -25,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Erro ao carregar animações:", err);
   }
 
-  // 3. Configura botões de links e integração com calendário
+  // 4. Configura botões de links e integração com calendário
   try {
     setupDynamicLinks();
     setupCalendarIntegration();
@@ -39,11 +52,15 @@ function setupDynamicLinks() {
   const cfg = window.SITE_CONFIG;
   if (!cfg) return;
 
-  // Botão RSVP WhatsApp
-  const rsvpBtn = document.getElementById("rsvpWhatsAppBtn");
+  // Botões de Confirmação de Presença acionam o modal oficial (sem WhatsApp)
+  const rsvpBtn = document.getElementById("rsvpEventBtn") || document.getElementById("rsvpWhatsAppBtn");
   if (rsvpBtn) {
-    const rsvpUrl = `https://api.whatsapp.com/send?phone=${cfg.whatsapp.numero}&text=${encodeURIComponent(cfg.evento.rsvpMensagem)}`;
-    rsvpBtn.href = rsvpUrl;
+    rsvpBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (window.rsvpModalManagerInstance) {
+        window.rsvpModalManagerInstance.open();
+      }
+    });
   }
 
   // Links de Localização
