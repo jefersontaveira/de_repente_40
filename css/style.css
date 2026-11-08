@@ -227,13 +227,13 @@ body.modal-open {
   position: relative;
   width: 100%;
   height: 100vh;
-  min-height: 720px;
+  min-height: 700px;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: var(--bg-main);
   overflow: visible; /* Essencial para permitir a profundidade 3D sem cortes */
-  padding: 4.5rem 1rem 2rem;
+  padding: 5rem 1rem 2rem;
 }
 
 .stage-perspective-viewport {
@@ -261,12 +261,15 @@ body.modal-open {
 }
 
 :root {
-  --revolve-radius: clamp(160px, 32vw, 300px);
+  --revolve-radius: clamp(140px, 28vw, 280px);
 }
 
 .stage-face {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -291,9 +294,14 @@ body.modal-open {
 
 .hero-content {
   position: relative;
+  width: 100%;
   max-width: 800px;
   margin: 0 auto;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .hero-invite-tag {
@@ -2123,151 +2131,488 @@ body.modal-open {
 }
 
 /* ====================================================================
- * RESPONSIVIDADE
+ * RESPONSIVIDADE COMPLETA E RIGOROSA (MOBILE FIRST REFINADO)
  * ==================================================================== */
-@media (max-width: 868px) {
-  .header-nav {
-    display: none; /* Simplificado no mobile */
+
+/* Ajustes para Tablets / Telas Médias (<= 992px) */
+@media (max-width: 992px) {
+  .details-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
   }
 
+  .gifts-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+/* Ajustes Principais para Celulares e Smartphones (<= 768px) */
+@media (max-width: 768px) {
+  /* 1. Header Fixo Compacto e Alinhado */
   .site-header {
-    background: rgba(253, 243, 231, 0.95);
+    background: rgba(253, 243, 231, 0.98);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(200, 75, 28, 0.15);
   }
 
   .header-container {
-    padding: 0.55rem 0.9rem;
+    padding: 0.65rem 1rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header-nav {
+    display: none; /* Oculta links do menu no celular */
+  }
+
+  .header-brand {
+    gap: 0.35rem;
   }
 
   .brand-cursive {
-    font-size: 1.25rem;
+    font-size: 1.45rem;
   }
 
   .brand-number {
-    font-size: 1.15rem;
-    padding: 0.15rem 0.45rem;
+    font-size: 0.82rem;
+    padding: 0.15rem 0.5rem;
   }
 
   .header-rsvp-btn {
-    padding: 0.45rem 0.85rem;
+    padding: 0.48rem 0.95rem;
     font-size: 0.82rem;
+    border-radius: var(--radius-full);
   }
 
-  /* Ajuste no Palco 3D para telas móveis */
+  /* Molduras decorativas botânicas menores para não invadir o conteúdo */
+  .botanical-top-left,
+  .botanical-top-right {
+    width: 140px;
+    max-width: 35vw;
+    opacity: 0.6;
+  }
+
+  /* 2. Palco 3D do Hero & Carta 100% Centralizado */
   .hero-revolve-stage {
-    min-height: 580px;
-    height: calc(100svh - 60px);
-    padding: 3.5rem 0.8rem 1.5rem;
+    min-height: 100svh;
+    height: 100svh;
+    padding: 60px 1rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .hero-invite-tag {
-    font-size: 1.4rem;
-    margin-bottom: 0.3rem;
+  .stage-perspective-viewport {
+    width: 100%;
+    height: 100%;
+    perspective: 1000px;
   }
 
-  .hero-title-main {
-    font-size: clamp(2.8rem, 11vw, 4rem);
-    margin-bottom: 0.4rem;
-  }
-
-  .hero-subtitle {
-    font-size: 0.95rem;
-    margin-bottom: 0.8rem;
+  .hero-content {
+    width: 100%;
     padding: 0 0.5rem;
   }
 
-  .hero-quick-chips {
-    gap: 0.4rem;
-    margin-bottom: 1rem;
+  .hero-invite-tag {
+    font-size: 1.55rem;
+    margin-bottom: 0.2rem;
+    line-height: 1.15;
   }
 
-  .quick-chip {
-    padding: 0.35rem 0.75rem;
-    font-size: 0.8rem;
+  .hero-heart-svg {
+    width: 26px;
+    height: 26px;
+    margin: 0.2rem auto 0.4rem;
   }
 
+  .hero-title-group {
+    margin: 0.1rem 0 0.6rem;
+  }
+
+  .hero-cursive-title {
+    font-size: 3.2rem;
+    line-height: 0.95;
+  }
+
+  .hero-big-number {
+    font-size: 6.8rem;
+    line-height: 0.85;
+    letter-spacing: -2px;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    line-height: 1.25;
+    margin: 0.3rem auto 0.8rem;
+    padding: 0 0.2rem;
+  }
+
+  /* Pílulas em formato de 2x2 perfeitamente centralizadas e legíveis */
+  .hero-quick-badges {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 340px;
+    margin: 0.6rem auto 1rem;
+  }
+
+  .hero-badge-pill {
+    padding: 0.45rem 0.6rem;
+    font-size: 0.82rem;
+    white-space: nowrap;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-scroll-indicator {
+    margin-top: 0.5rem;
+    font-size: 0.72rem;
+  }
+
+  .scroll-mouse {
+    width: 18px;
+    height: 28px;
+  }
+
+  /* 3. Carta da Millena no Mobile */
   .letter-card {
-    padding: 2.2rem 1.1rem 1.6rem;
-    border-radius: 20px;
+    padding: 2.5rem 1.3rem 1.8rem;
+    border-radius: 22px;
+    width: 100%;
+    max-width: 92vw;
   }
 
   .letter-avatar-wrap {
-    width: 60px;
-    height: 60px;
-    font-size: 1.7rem;
-    margin: -3.8rem auto 0.8rem;
+    width: 62px;
+    height: 62px;
+    font-size: 1.75rem;
+    margin: -4.2rem auto 0.8rem;
   }
 
   .letter-title {
-    font-size: 1.35rem;
+    font-size: 1.45rem;
     margin-bottom: 0.8rem;
-    line-height: 1.3;
+    line-height: 1.25;
   }
 
   .letter-body {
-    font-size: 0.92rem;
+    font-size: 0.95rem;
     line-height: 1.6;
     margin-bottom: 1.2rem;
   }
 
   .letter-signature {
-    font-size: 1.9rem;
+    font-size: 2rem;
   }
 
+  /* 4. Seção Feijoada & Pagode */
   .party-section {
     padding: 3rem 1rem 1rem;
     margin-top: 1rem;
   }
 
-  .details-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.75rem;
+  .party-pre-title {
+    font-size: 1.8rem;
+    margin-bottom: 0.4rem;
   }
 
-  .info-glass-card {
-    padding: 1.3rem 0.6rem;
-  }
-
-  .info-icon-wrap {
-    width: 42px;
-    height: 42px;
-    margin-bottom: 0.5rem;
-  }
-
-  .info-icon-wrap svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .info-label {
-    font-size: 0.75rem;
-  }
-
-  .info-value {
-    font-size: 1rem;
+  .party-banner-container {
+    max-width: 95vw;
+    margin: 0.3rem auto 1.2rem;
   }
 
   .party-banner-text {
-    font-size: 1.8rem;
-    padding: 0.4rem 1.2rem;
-    max-width: 90vw;
+    font-size: 1.7rem;
+    padding: 0.5rem 1.4rem;
+    white-space: normal; /* Permite quebrar se o celular for muito estreito */
+    line-height: 1.2;
   }
 
-  .floating-audio-toggle {
-    bottom: 15px;
-    right: 15px;
-    padding: 0.5rem 0.85rem;
-    font-size: 0.8rem;
+  .note-left {
+    left: -10px;
+    top: -12px;
+    width: 26px;
+    height: 26px;
+  }
+
+  .note-right {
+    right: -10px;
+    bottom: -12px;
+    width: 26px;
+    height: 26px;
+  }
+
+  /* Palco Esférico dos 4 Cards de Destaque */
+  .party-ball-stage {
+    min-height: 420px;
+    padding: 0;
+  }
+
+  .ball-perspective-viewport {
+    height: 420px;
+    min-height: 420px;
+    perspective: 1100px;
+  }
+
+  .ball-face {
+    width: 290px;
+    height: 350px;
+    margin-top: -175px;
+    margin-left: -145px;
+  }
+
+  .ball-face .menu-feature-card {
+    padding: 2rem 1.4rem;
+    border-radius: 32px;
+  }
+
+  .feature-card-icon {
+    font-size: 3.2rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .feature-card-title {
+    font-size: 1.55rem;
+  }
+
+  .feature-card-desc {
+    font-size: 0.88rem;
+  }
+
+  /* 5. Seção Informações & Montagem */
+  .event-details-section {
+    padding: 2.5rem 1rem 3rem;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr; /* No celular, vira 1 card por linha espaçoso e legível */
+    gap: 1rem;
+    max-width: 360px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .info-glass-card {
+    padding: 1.5rem 1.2rem;
+    border-radius: var(--radius-md);
+  }
+
+  .info-icon-wrap {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 0.6rem;
+  }
+
+  .info-label {
+    font-size: 0.82rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .info-value {
+    font-size: 1.35rem;
+  }
+
+  .countdown-card {
+    padding: 1.8rem 1rem;
+    max-width: 360px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .countdown-header h3 {
+    font-size: 1.7rem;
+    margin-bottom: 1rem;
   }
 
   .countdown-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.4rem;
+  }
+
+  .countdown-box {
+    padding: 0.9rem 0.2rem;
+  }
+
+  .countdown-number {
+    font-size: 1.6rem;
+  }
+
+  .countdown-unit {
+    font-size: 0.65rem;
+  }
+
+  .info-actions-row {
+    flex-direction: column;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    gap: 0.8rem;
+  }
+
+  .info-actions-row .btn-primary,
+  .info-actions-row .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Linha do tempo / Cronograma */
+  .schedule-card {
+    padding: 1.8rem 1.2rem;
+    margin: 0 auto 2.5rem;
+  }
+
+  .timeline-item {
+    gap: 0.8rem;
+  }
+
+  /* 6. Mural de Recados */
+  .guestbook-section {
+    padding: 2.5rem 1rem 3.5rem;
+  }
+
+  .guestbook-card {
+    padding: 2.2rem 1.2rem 1.8rem;
+    border-radius: 20px;
+  }
+
+  .guestbook-header h2 {
+    font-size: 1.9rem;
+  }
+
+  .paper-subtitle {
+    font-size: 0.9rem;
   }
 
   .form-row {
     flex-direction: column;
+    gap: 1rem;
   }
 
-  .guestbook-card {
-    padding: 2rem 1.2rem;
+  .btn-submit-guestbook {
+    padding: 1rem 1.5rem;
+    font-size: 1.05rem;
+  }
+
+  .btn-view-all-notes {
+    padding: 0.95rem 1.8rem;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 340px;
+    justify-content: center;
+  }
+
+  /* 7. Lista de Presentes */
+  .gifts-section {
+    padding: 3rem 1rem 4rem;
+  }
+
+  .gifts-section-tag {
+    font-size: 1.6rem;
+  }
+
+  .gifts-main-title {
+    font-size: 2rem;
+  }
+
+  .gifts-desc {
+    font-size: 0.95rem;
+  }
+
+  .category-filters-container {
+    gap: 0.4rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .filter-pill {
+    padding: 0.5rem 0.95rem;
+    font-size: 0.85rem;
+  }
+
+  .gifts-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+
+  .gift-card {
+    padding: 1.5rem 1.2rem;
+  }
+
+  /* 8. Botão Flutuante de Áudio */
+  .floating-audio-toggle {
+    bottom: 16px;
+    right: 16px;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.78rem;
+  }
+
+  .floating-audio-toggle span {
+    display: inline;
+  }
+
+  /* 9. Modais no Celular (RSVP, PIX, Mural) */
+  .modal-container {
+    padding: 0.8rem;
+  }
+
+  .modal-card {
+    padding: 2rem 1.2rem 1.6rem;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .modal-title {
+    font-size: 1.65rem;
+  }
+
+  .modal-subtitle {
+    font-size: 0.88rem;
+  }
+
+  .modal-card.modal-mural-card,
+  #allMessagesModal .modal-card {
+    width: 100%;
+    max-width: 100%;
+    height: 94vh;
+    max-height: 94vh;
+    padding: 1.6rem 1rem;
+  }
+}
+
+/* Telas muito pequenas (<= 380px como iPhone SE / Galaxy Mini) */
+@media (max-width: 380px) {
+  .hero-cursive-title {
+    font-size: 2.8rem;
+  }
+
+  .hero-big-number {
+    font-size: 5.8rem;
+  }
+
+  .hero-quick-badges {
+    grid-template-columns: 1fr;
+    max-width: 260px;
+  }
+
+  .ball-face {
+    width: 260px;
+    height: 330px;
+    margin-top: -165px;
+    margin-left: -130px;
+  }
+
+  .countdown-number {
+    font-size: 1.35rem;
+  }
+
+  .brand-cursive {
+    font-size: 1.25rem;
   }
 }
