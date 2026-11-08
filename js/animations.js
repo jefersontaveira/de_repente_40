@@ -823,55 +823,50 @@ class SiteAnimations {
   }
 
   /* ------------------------------------------------------------------
-   * 10. SOM DE AMBIENTE OPCIONAL (WEB AUDIO API - LEVE E PROCEDURAL)
+   * 10. SOM DE AMBIENTE — PAGODE FESTIVO DA MILLENA
    * ------------------------------------------------------------------ */
   initAudioAmbience() {
     const audioBtn = document.getElementById("audioToggleBtn");
+    const audioEl = document.getElementById("bgPagodeAudio");
     if (!audioBtn) return;
 
+    const labelSpan = audioBtn.querySelector("span");
     let isPlaying = false;
-    let audioCtx = null;
-    let loopInterval = null;
 
-    const playFestiveChime = () => {
-      if (!isPlaying || !audioCtx) return;
-      const notes = [261.63, 329.63, 392.00, 523.25, 659.25];
-      const note = notes[Math.floor(Math.random() * notes.length)];
+    // Volume inicial agradável para som ambiente de fundo
+    if (audioEl) {
+      audioEl.volume = 0.55;
+    }
 
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(note, audioCtx.currentTime);
-
-      gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.2);
-
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-
-      osc.start();
-      osc.stop(audioCtx.currentTime + 1.2);
+    const updateButtonUI = (playing) => {
+      isPlaying = playing;
+      audioBtn.classList.toggle("is-playing", playing);
+      if (labelSpan) {
+        labelSpan.textContent = playing ? "Pausar Pagode ⏸️" : "Tocar Pagode 🥁";
+      }
     };
 
     audioBtn.addEventListener("click", () => {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (audioCtx.state === "suspended") {
-        audioCtx.resume();
-      }
+      if (!audioEl) return;
 
-      isPlaying = !isPlaying;
-      audioBtn.classList.toggle("is-playing", isPlaying);
-
-      if (isPlaying) {
-        playFestiveChime();
-        loopInterval = setInterval(playFestiveChime, 2500);
+      if (!isPlaying) {
+        audioEl.play()
+          .then(() => updateButtonUI(true))
+          .catch((err) => {
+            console.warn("Autoplay bloqueado pelo navegador:", err);
+            updateButtonUI(false);
+          });
       } else {
-        if (loopInterval) clearInterval(loopInterval);
+        audioEl.pause();
+        updateButtonUI(false);
       }
     });
+
+    if (audioEl) {
+      audioEl.addEventListener("ended", () => updateButtonUI(false));
+      audioEl.addEventListener("pause", () => updateButtonUI(false));
+      audioEl.addEventListener("play", () => updateButtonUI(true));
+    }
   }
 }
 
