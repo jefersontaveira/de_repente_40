@@ -34,8 +34,8 @@ const SITE_CONFIG = {
 
   // Dados para Pagamento e Confirmação via PIX (100% Gratuito - Padrão Banco Central EMVCo)
   pix: {
-    chave: "+5585981311975",
-    nomeTitular: "JEFERSON BORGES TAVEIRA",
+    chave: "+5585996681662",
+    nomeTitular: "Millena Silva Carneiro Pinho",
     cidadeTitular: "FORTALEZA",
     txIdPadrao: "NIVER40"
   },
