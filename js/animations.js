@@ -206,18 +206,22 @@ class SiteAnimations {
     if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
       gsap.registerPlugin(ScrollTrigger);
 
+      // Responsividade dinâmica: no mobile o scroll é mais rápido e o palco tem fluxo livre
+      const isMobile = window.innerWidth <= 768;
+
       // Posição inicial: Rotator em 0deg, Hero em frente, Carta oculta à direita (+90deg)
       gsap.set(rotator, { rotateY: 0 });
       gsap.set(faceHero, { opacity: 1, pointerEvents: "auto" });
       gsap.set(faceLetter, { opacity: 0, pointerEvents: "none" });
 
-      // Cria a timeline sincronizada com o scroll que executa a volta fluida como uma só seção
+      // Cria a timeline sincronizada com o scroll que executa a volta fluida como uma só cena
       const revolveTl = gsap.timeline({
         scrollTrigger: {
           trigger: stage,
-          start: "top top",
-          end: "+=1200", // Distância confortável: Hero -> Giro 3D -> Leitura da Carta
+          start: isMobile ? "top 55px" : "top top",
+          end: isMobile ? "+=800" : "+=1200", // Distância calibrada para toque no celular
           pin: true,
+          pinSpacing: true, // Garante que a próxima seção (Feijoada) nunca sobreponha o card
           scrub: 0.6, // Inércia ultra-suave e reativa
           anticipatePin: 1,
           onUpdate: (self) => {
