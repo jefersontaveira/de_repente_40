@@ -65,12 +65,14 @@ html {
   background-color: var(--bg-main);
   color: var(--coffee);
   font-family: var(--font-main);
+  overflow-x: hidden; /* Elimina qualquer rolagem horizontal indesejada */
   scrollbar-gutter: stable; /* Previne o deslocamento do layout para a direita ao abrir modais */
 }
 
 @supports not (scrollbar-gutter: stable) {
   html {
     overflow-y: scroll; /* Fallback universal para navegadores antigos */
+    overflow-x: hidden;
   }
 }
 
@@ -80,6 +82,8 @@ body {
   color: var(--coffee);
   line-height: 1.6;
   position: relative;
+  overflow-x: hidden; /* Garante viewport 100% contido lateralmente */
+  width: 100%;
 }
 
 body.modal-open {
@@ -2200,21 +2204,41 @@ body.modal-open {
   .hero-revolve-stage {
     min-height: 100svh;
     height: 100svh;
-    padding: 60px 1rem 1rem;
+    padding: 80px 1rem 1rem; /* Espaço para o header */
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden; /* Corta qualquer elemento que queira escapar para a direita */
   }
 
   .stage-perspective-viewport {
     width: 100%;
     height: 100%;
-    perspective: 1000px;
+    perspective: none;
+    transform-style: flat;
+    overflow: hidden;
+  }
+
+  .stage-rotator-3d {
+    transform-style: flat;
+    width: 100%;
+    height: 100%;
+  }
+
+  .stage-face {
+    transform-style: flat;
+    transform: none !important;
+  }
+
+  .stage-face-hero,
+  .stage-face-letter {
+    transform: none !important;
   }
 
   .hero-content {
     width: 100%;
     padding: 0 0.5rem;
+    margin-top: 15px; /* Empurra o conteúdo para baixo, garantindo que "Você está convidado(a)" fique 100% visível */
   }
 
   .hero-invite-tag {

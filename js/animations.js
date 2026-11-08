@@ -209,17 +209,23 @@ class SiteAnimations {
       // Responsividade dinâmica: no mobile o scroll é mais rápido e o palco tem fluxo livre
       const isMobile = window.innerWidth <= 768;
 
-      // Posição inicial: Rotator em 0deg, Hero em frente, Carta oculta à direita (+90deg)
-      gsap.set(rotator, { rotateY: 0 });
-      gsap.set(faceHero, { opacity: 1, pointerEvents: "auto" });
-      gsap.set(faceLetter, { opacity: 0, pointerEvents: "none" });
+      // Posição inicial: Rotator em 0, Hero em frente, Carta oculta
+      if (isMobile) {
+        gsap.set(rotator, { x: 0 });
+        gsap.set(faceHero, { opacity: 1, x: 0, pointerEvents: "auto", position: "relative" });
+        gsap.set(faceLetter, { opacity: 0, x: "100%", pointerEvents: "none", position: "absolute" });
+      } else {
+        gsap.set(rotator, { rotateY: 0 });
+        gsap.set(faceHero, { opacity: 1, pointerEvents: "auto" });
+        gsap.set(faceLetter, { opacity: 0, pointerEvents: "none" });
+      }
 
       // Cria a timeline sincronizada com o scroll que executa a volta fluida como uma só cena
       const revolveTl = gsap.timeline({
         scrollTrigger: {
           trigger: stage,
-          start: isMobile ? "top 55px" : "top top",
-          end: isMobile ? "+=800" : "+=1200", // Distância calibrada para toque no celular
+          start: isMobile ? "top top" : "top top",
+          end: isMobile ? "+=700" : "+=1200", // Distância calibrada para toque no celular
           pin: true,
           pinSpacing: true, // Garante que a próxima seção (Feijoada) nunca sobreponha o card
           scrub: 0.6, // Inércia ultra-suave e reativa
@@ -237,29 +243,42 @@ class SiteAnimations {
         }
       });
 
-      // 1. Buffer inicial: o Hero repousa estático até o scroll intencional começar (0.0 a 0.12)
-      // 2. Giro 3D simultâneo do palco (0.12 a 0.68):
-      //    O palco gira -90deg em bloco unificado.
-      //    Hero (0deg -> -90deg) gira para a esquerda saindo.
-      //    Carta (+90deg -> 0deg) simultaneamente gira da direita entrando de frente!
-      revolveTl.to(rotator, {
-        rotateY: -90,
-        ease: "power1.inOut",
-        duration: 0.56
-      }, 0.12);
+      if (isMobile) {
+        // No celular: transição deslizante 2D fluida, 100% centralizada e sem transbordamento lateral
+        revolveTl.to(faceHero, {
+          x: "-80%",
+          opacity: 0,
+          ease: "power1.inOut",
+          duration: 0.45
+        }, 0.12);
 
-      // Transição sutil de opacidade para refinamento nas bordas do giro 3D:
-      revolveTl.to(faceHero, {
-        opacity: 0,
-        ease: "power1.in",
-        duration: 0.35
-      }, 0.22);
+        revolveTl.to(faceLetter, {
+          x: "0%",
+          opacity: 1,
+          ease: "power1.inOut",
+          duration: 0.45
+        }, 0.18);
+      } else {
+        // No desktop: Giro 3D simultâneo do palco
+        revolveTl.to(rotator, {
+          rotateY: -90,
+          ease: "power1.inOut",
+          duration: 0.56
+        }, 0.12);
 
-      revolveTl.to(faceLetter, {
-        opacity: 1,
-        ease: "power1.out",
-        duration: 0.35
-      }, 0.32);
+        // Transição sutil de opacidade para refinamento nas bordas do giro 3D:
+        revolveTl.to(faceHero, {
+          opacity: 0,
+          ease: "power1.in",
+          duration: 0.35
+        }, 0.22);
+
+        revolveTl.to(faceLetter, {
+          opacity: 1,
+          ease: "power1.out",
+          duration: 0.35
+        }, 0.32);
+      }
 
       // 3. Buffer de leitura (0.68 a 1.0):
       //    A carta permanece estática e centralizada para leitura antes de continuar o scroll do site.
