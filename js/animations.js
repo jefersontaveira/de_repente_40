@@ -212,8 +212,8 @@ class SiteAnimations {
       // Posição inicial: Rotator em 0, Hero em frente, Carta oculta
       if (isMobile) {
         gsap.set(rotator, { x: 0 });
-        gsap.set(faceHero, { opacity: 1, x: 0, pointerEvents: "auto", position: "relative" });
-        gsap.set(faceLetter, { opacity: 0, x: "100%", pointerEvents: "none", position: "absolute" });
+        gsap.set(faceHero, { opacity: 1, x: 0, pointerEvents: "auto" });
+        gsap.set(faceLetter, { opacity: 0, x: 0, pointerEvents: "none" });
       } else {
         gsap.set(rotator, { rotateY: 0 });
         gsap.set(faceHero, { opacity: 1, pointerEvents: "auto" });
@@ -224,8 +224,8 @@ class SiteAnimations {
       const revolveTl = gsap.timeline({
         scrollTrigger: {
           trigger: stage,
-          start: isMobile ? "top top" : "top top",
-          end: isMobile ? "+=700" : "+=1200", // Distância calibrada para toque no celular
+          start: "top top",
+          end: isMobile ? "+=650" : "+=1200", // Distância calibrada para toque no celular
           pin: true,
           pinSpacing: true, // Garante que a próxima seção (Feijoada) nunca sobreponha o card
           scrub: 0.6, // Inércia ultra-suave e reativa
@@ -244,20 +244,20 @@ class SiteAnimations {
       });
 
       if (isMobile) {
-        // No celular: transição deslizante 2D fluida, 100% centralizada e sem transbordamento lateral
+        // No celular: transição fade pura, suave e elegante sem deslocar para fora do palco
         revolveTl.to(faceHero, {
-          x: "-80%",
           opacity: 0,
+          scale: 0.95,
           ease: "power1.inOut",
           duration: 0.45
         }, 0.12);
 
         revolveTl.to(faceLetter, {
-          x: "0%",
           opacity: 1,
+          scale: 1,
           ease: "power1.inOut",
           duration: 0.45
-        }, 0.18);
+        }, 0.35);
       } else {
         // No desktop: Giro 3D simultâneo do palco
         revolveTl.to(rotator, {
