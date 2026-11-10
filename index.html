@@ -24,7 +24,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@700&family=Outfit:wght@600;700;800;900&family=Playfair+Display:ital,wght@1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Estilos Principais -->
-  <link rel="stylesheet" href="css/style.css?v=3.2">
+  <link rel="stylesheet" href="css/style.css?v=3.4">
 </head>
 <body>
 
@@ -534,11 +534,41 @@
         <input type="text" id="pixGuestName" class="pix-input-text" placeholder="Ex: Mariana & Carlos" required>
       </div>
 
+      <div id="pixAlertBox" class="rsvp-alert-box" style="display: none;"></div>
+
       <button type="button" id="confirmPixDoneBtn" class="btn-whatsapp-notify" style="border: none; cursor: pointer; width: 100%;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="20 6 9 17 4 12"></polyline>
         </svg>
         <span>Já fiz o PIX! Registrar Presente</span>
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ================================================================
+       MODAL DE CONFIRMAÇÃO DE PRESENTE REGISTRADO NA PLANILHA
+       ================================================================ -->
+  <div class="modal-overlay" id="giftSuccessModal" role="dialog" aria-modal="true" aria-labelledby="giftSuccessTitle">
+    <div class="modal-card gift-success-card">
+      <button type="button" class="modal-close-btn" data-close-modal aria-label="Fechar confirmação">&times;</button>
+
+      <div class="success-check-circle" aria-hidden="true">
+        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+
+      <span class="mural-badge-tag">Confirmado na Planilha</span>
+      <h3 class="modal-title" id="giftSuccessTitle">Presente Registrado com Sucesso! 💖</h3>
+      <p class="modal-desc" id="giftSuccessSubtitle">
+        Muito obrigado pelo carinho! Seu presente já foi gravado na lista oficial da Millena.
+      </p>
+
+      <div class="gift-summary-box" id="giftSuccessSummary"></div>
+
+      <button type="button" id="closeGiftSuccessBtn" class="btn-whatsapp-notify" data-close-modal style="border: none; cursor: pointer; width: 100%;">
+        <span>Perfeito! Voltar para o Site</span>
       </button>
     </div>
   </div>
@@ -652,12 +682,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <!-- Módulos do Projeto -->
-  <script src="js/config.js?v=2.6"></script>
-  <script src="js/pix.js?v=2.6"></script>
-  <script src="js/sheets.js?v=2.6"></script>
+  <script src="js/config.js?v=2.7"></script>
+  <script src="js/pix.js?v=2.7"></script>
+  <script src="js/sheets.js?v=2.7"></script>
   <script src="js/animations.js?v=3.2"></script>
-  <script src="js/gifts.js?v=2.6"></script>
-  <script src="js/main.js?v=2.6"></script>
+  <script src="js/gifts.js?v=2.7"></script>
+  <script src="js/main.js?v=2.7"></script>
 
 </body>
 </html>

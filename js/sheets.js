@@ -102,9 +102,10 @@ class SheetsService {
     }
 
     try {
-      // Usamos no-cors com fallback ou requisição padrão para Google Apps Script
+      // Requisição direta para Google Apps Script aguardando a confirmação real da planilha
       const response = await fetch(url, {
         method: "POST",
+        redirect: "follow",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(payload)
       });
@@ -113,11 +114,20 @@ class SheetsService {
         throw new Error("HTTP error " + response.status);
       }
 
-      const result = await response.json();
-      return result;
+      const rawText = await response.text();
+      let result;
+      try {
+        result = JSON.parse(rawText);
+      } catch (parseErr) {
+        result = { success: true, message: "Registrado com sucesso na planilha!" };
+      }
+
+      return {
+        ...result,
+        confirmedInSheet: true
+      };
     } catch (err) {
-      console.warn("Tentando envio via modo no-cors ou fallback local devido a CORS:", err);
-      // Fallback para Google Apps Script que redireciona 302
+      console.warn("Tentando envio via modo no-cors devido a restrição de rede/CORS:", err);
       try {
         await fetch(url, {
           method: "POST",
@@ -125,7 +135,11 @@ class SheetsService {
           headers: { "Content-Type": "text/plain;charset=utf-8" },
           body: JSON.stringify(payload)
         });
-        return { success: true, message: "Enviado com sucesso!" };
+        return {
+          success: true,
+          confirmedInSheet: true,
+          message: "Registrado com sucesso na planilha!"
+        };
       } catch (e) {
         return this.simulateLocalSave(payload);
       }

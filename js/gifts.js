@@ -40,6 +40,7 @@ class GiftManager {
     this.filtersContainer = document.getElementById("categoryFilters");
     this.pixModal = document.getElementById("pixModal");
     this.physicalModal = document.getElementById("physicalModal");
+    this.giftSuccessModal = document.getElementById("giftSuccessModal");
     this.toast = document.getElementById("toastNotification");
   }
 
@@ -49,7 +50,7 @@ class GiftManager {
       btn.addEventListener("click", () => this.closeAllModals());
     });
 
-    [this.pixModal, this.physicalModal].forEach(modal => {
+    [this.pixModal, this.physicalModal, this.giftSuccessModal].forEach(modal => {
       if (!modal) return;
       modal.addEventListener("click", (e) => {
         if (e.target === modal) this.closeAllModals();
@@ -223,11 +224,23 @@ class GiftManager {
       this.updatePixQRCode(gift.valor);
     }
 
+    // Limpa alertas anteriores do modal PIX
+    const pixAlert = document.getElementById("pixAlertBox");
+    if (pixAlert) {
+      pixAlert.style.display = "none";
+      pixAlert.innerHTML = "";
+    }
+
     // Preenche o nome do convidado com o nome memorizado no dispositivo
     const pixNameInput = document.getElementById("pixGuestName");
-    if (pixNameInput && typeof UserManager !== "undefined") {
-      const savedName = UserManager.getName();
-      if (savedName) pixNameInput.value = savedName;
+    if (pixNameInput) {
+      if (typeof UserManager !== "undefined") {
+        const savedName = UserManager.getName();
+        if (savedName) pixNameInput.value = savedName;
+      }
+      pixNameInput.addEventListener("input", () => {
+        if (pixAlert) pixAlert.style.display = "none";
+      }, { once: true });
     }
 
     if (this.pixModal) {
@@ -239,17 +252,28 @@ class GiftManager {
   async handlePixConfirmation() {
     if (!this.selectedGift) return;
 
+    const currentGift = this.selectedGift;
     const nameInput = document.getElementById("pixGuestName");
+    const pixAlert = document.getElementById("pixAlertBox");
     const nome = nameInput ? nameInput.value.trim() : "";
 
     if (!nome) {
+      if (pixAlert) {
+        pixAlert.className = "rsvp-alert-box error";
+        pixAlert.innerHTML = "<strong>Quase lá!</strong> Por favor, digite seu Nome / Família no campo acima para registrar seu presente na planilha da Millena.";
+        pixAlert.style.display = "block";
+      }
       this.showToast("Por favor, informe seu nome para a Millena saber quem a presenteou! 💖");
       if (nameInput) nameInput.focus();
       return;
     }
 
-    let valor = this.selectedGift.valor;
-    if (this.selectedGift.isLivre) {
+    if (pixAlert) {
+      pixAlert.style.display = "none";
+    }
+
+    let valor = currentGift.valor;
+    if (currentGift.isLivre) {
       const customInput = document.getElementById("customPixAmount");
       valor = customInput ? parseFloat(customInput.value.replace(",", ".")) : 100;
       if (isNaN(valor) || valor <= 0) valor = 100;
@@ -259,32 +283,66 @@ class GiftManager {
     const originalText = confirmBtn ? confirmBtn.innerHTML : "";
     if (confirmBtn) {
       confirmBtn.disabled = true;
-      confirmBtn.innerHTML = `<span>Registrando na lista da Millena... ⏳</span>`;
+      confirmBtn.innerHTML = `<span>Confirmando na planilha da Millena... ⏳</span>`;
     }
 
     try {
+      let response = { success: true };
       if (typeof SheetsService !== "undefined") {
-        await SheetsService.submitPixGift({
+        response = await SheetsService.submitPixGift({
           name: nome,
-          giftTitle: this.selectedGift.titulo,
+          giftTitle: currentGift.titulo,
           amount: valor
         });
       }
 
-      this.showToast("Presente registrado com sucesso na lista da Millena! Muito obrigado pelo carinho! 💖");
-      
-      setTimeout(() => {
-        if (confirmBtn) {
-          confirmBtn.disabled = false;
-          confirmBtn.innerHTML = originalText;
-        }
-        this.closeAllModals();
-      }, 1500);
+      if (response && response.success === false) {
+        throw new Error(response.message || "Não foi possível gravar na planilha.");
+      }
+
+      // Marca o presente como escolhido pelo convidado
+      this.reservedGifts[currentGift.id] = {
+        nome: nome,
+        valor: valor,
+        tipo: "pix",
+        data: new Date().toISOString()
+      };
+      this.saveReservedGifts();
+      this.renderGifts();
+
+      // Restaura o botão imediatamente
+      if (confirmBtn) {
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = originalText;
+      }
+
+      // Fecha IMEDIATAMENTE o pop-up do PIX assim que a planilha confirma e abre a confirmação!
+      if (this.pixModal) {
+        this.pixModal.classList.remove("active");
+      }
+      this.selectedGift = null;
+
+      this.openGiftSuccessModal({
+        type: "pix",
+        guestName: nome,
+        giftTitle: currentGift.titulo,
+        amountFormatted: this.formatCurrency(valor)
+      });
+
+      this.showToast("Presente registrado com sucesso na planilha da Millena! 💖");
 
     } catch (err) {
       console.error("Erro ao registrar PIX:", err);
-      this.showToast("Presente anotado com carinho! Muito obrigado! 💖");
-      this.closeAllModals();
+      if (confirmBtn) {
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = originalText;
+      }
+      if (pixAlert) {
+        pixAlert.className = "rsvp-alert-box error";
+        pixAlert.innerHTML = "Não foi possível conectar à planilha agora. Verifique sua conexão e tente novamente.";
+        pixAlert.style.display = "block";
+      }
+      this.showToast("Erro ao confirmar na planilha. Tente novamente!");
     }
   }
 
@@ -383,6 +441,7 @@ class GiftManager {
     e.preventDefault();
     if (!this.selectedGift) return;
 
+    const currentGift = this.selectedGift;
     const nameInput = document.getElementById("guestName");
     const msgInput = document.getElementById("guestMessage");
     const nome = nameInput ? nameInput.value.trim() : "";
@@ -398,49 +457,100 @@ class GiftManager {
     const originalText = submitBtn ? submitBtn.innerHTML : "";
     if (submitBtn) {
       submitBtn.disabled = true;
-      submitBtn.innerHTML = `<span>Registrando na planilha... ⏳</span>`;
+      submitBtn.innerHTML = `<span>Confirmando na planilha da Millena... ⏳</span>`;
     }
 
-    // Salva nos itens reservados localmente
-    this.reservedGifts[this.selectedGift.id] = {
-      nome: nome,
-      recado: recado,
-      data: new Date().toISOString()
-    };
-    this.saveReservedGifts();
-
     try {
-      // Registra na planilha do Google Sheets (sem redirecionar para o WhatsApp)
+      // Registra na planilha do Google Sheets e aguarda a confirmação real
       if (typeof SheetsService !== "undefined") {
         await SheetsService.submitPhysicalGift({
           name: nome,
-          giftTitle: this.selectedGift.titulo,
+          giftTitle: currentGift.titulo,
           message: recado
         });
       }
 
-      this.showToast("Presente físico confirmado com sucesso na lista da Millena! 🎁");
-      
-      setTimeout(() => {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalText;
-        }
-        this.closeAllModals();
-        this.renderGifts();
-      }, 1500);
+      // Salva nos itens reservados localmente
+      this.reservedGifts[currentGift.id] = {
+        nome: nome,
+        recado: recado,
+        tipo: "fisico",
+        data: new Date().toISOString()
+      };
+      this.saveReservedGifts();
+      this.renderGifts();
+
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+
+      // Fecha IMEDIATAMENTE o pop-up do presente físico e abre a confirmação
+      if (this.physicalModal) {
+        this.physicalModal.classList.remove("active");
+      }
+      this.selectedGift = null;
+
+      this.openGiftSuccessModal({
+        type: "physical",
+        guestName: nome,
+        giftTitle: currentGift.titulo,
+        message: recado
+      });
+
+      this.showToast("Presente físico confirmado com sucesso na planilha da Millena! 🎁");
 
     } catch (err) {
       console.error("Erro ao registrar presente físico:", err);
-      this.showToast("Presente físico reservado com carinho! 🎁");
-      this.closeAllModals();
-      this.renderGifts();
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+      this.showToast("Erro ao registrar na planilha. Tente novamente!");
     }
+  }
+
+  openGiftSuccessModal({ type, guestName, giftTitle, amountFormatted, message }) {
+    if (!this.giftSuccessModal) return;
+
+    const titleEl = document.getElementById("giftSuccessTitle");
+    const subtitleEl = document.getElementById("giftSuccessSubtitle");
+    const summaryEl = document.getElementById("giftSuccessSummary");
+
+    if (type === "pix") {
+      if (titleEl) titleEl.textContent = "PIX Registrado com Sucesso! 💖";
+      if (subtitleEl) {
+        subtitleEl.textContent = `Muito obrigado pelo carinho, ${guestName}! O seu presente já foi gravado na planilha oficial da Millena.`;
+      }
+      if (summaryEl) {
+        summaryEl.innerHTML = `
+          <div>🎁 <strong>Presente:</strong> ${giftTitle}</div>
+          <div>💛 <strong>De:</strong> ${guestName}</div>
+          <div>✨ <strong>Valor Registrado:</strong> ${amountFormatted}</div>
+        `;
+      }
+    } else {
+      if (titleEl) titleEl.textContent = "Presente Confirmado! 🎁";
+      if (subtitleEl) {
+        subtitleEl.textContent = `Muito obrigado pelo carinho, ${guestName}! Sua escolha já foi anotada na planilha oficial da Millena.`;
+      }
+      if (summaryEl) {
+        summaryEl.innerHTML = `
+          <div>🎁 <strong>Presente Físico:</strong> ${giftTitle}</div>
+          <div>💛 <strong>De:</strong> ${guestName}</div>
+          ${message ? `<div>💌 <strong>Recado:</strong> "${message}"</div>` : ""}
+        `;
+      }
+    }
+
+    this.giftSuccessModal.classList.add("active");
+    document.body.classList.add("modal-open");
   }
 
   closeAllModals() {
     if (this.pixModal) this.pixModal.classList.remove("active");
     if (this.physicalModal) this.physicalModal.classList.remove("active");
+    if (this.giftSuccessModal) this.giftSuccessModal.classList.remove("active");
     document.body.classList.remove("modal-open");
     this.selectedGift = null;
   }
